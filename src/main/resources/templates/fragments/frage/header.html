@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shop</title>
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn {
+            text-align: center;
+            padding: 10px;
+            margin: 5px;
+            flex: 1;
+        }
+
+        .btn-login {
+            font-size: 20px;
+            background-color: #0D0D0D;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation-->
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="/">Start Bootstrap</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+<!--                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>-->
+<!--                    <li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
+<!--                    <li class="nav-item dropdown">-->
+<!--                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"-->
+<!--                           data-bs-toggle="dropdown" aria-expanded="false">Shop</a>-->
+<!--                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                            <li><a class="dropdown-item" href="#!">All Products</a></li>-->
+<!--                            <li>-->
+<!--                                <hr class="dropdown-divider"/>-->
+<!--                            </li>-->
+<!--                            <li><a class="dropdown-item" href="#!">Popular Items</a></li>-->
+<!--                            <li><a class="dropdown-item" href="#!">New Arrivals</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+                </ul>
+
+                <div class="button-container">
+                    <!-- 로그인 상태 확인 -->
+                    <div th:if="${userLoggedIn}">
+                        <!-- 로그인한 경우 -->
+                        <span th:text="${nickname}">닉네임</span>
+                        <a th:if="${role == 'ROLE_ADMIN'}" href="/admin" class="nav-item" style="color:#0D0D0D; margin-left: 10px;">
+                            관리자페이지
+                        </a>
+                        <a th:if="${role != 'ROLE_ADMIN'}" href="/mypage" class="nav-item" style="color:#0D0D0D; margin-left: 10px;">
+                            마이페이지
+                        </a>
+                        <a href="/logout" class="btn-logout" style="color:#0D0D0D; margin-left: 10px;">
+                            로그아웃
+                        </a>
+                    </div>
+                    <div th:if="${!userLoggedIn}">
+                        <!-- 비로그인 상태 -->
+                        <a href="/login" class="btn-login" style="color:#0D0D0D;">
+                            로그인
+                        </a>
+                        <a href="/user/signup" class="nav-item" style="color:#0D0D0D; margin-left: 5px;">
+                            회원가입
+                        </a>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <a href="/cart/page" class="btn btn-outline-dark" id="cart-button">
+                        <i class="bi-cart-fill me-1"></i>
+                        Cart
+                        <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shop in style</h1>
+            <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+             const userLoggedIn = [[${userLoggedIn}]];
+             console.log(userLoggedIn)
+
+             if (userLoggedIn) {
+                 fetch('/cart/count')
+                     .then(response => {
+                         if (response.ok) {
+                             return response.json(); // JSON 응답 파싱
+                         }
+                         throw new Error('Network response was not ok.');
+                     })
+                     .then(count => {
+                         document.getElementById('cart-count').textContent = count; // 카운트 업데이트
+                     })
+                     .catch(error => {
+                         console.error('Error fetching cart count:', error);
+                     });
+             } else {
+                 document.getElementById('cart-count').textContent = '0'; // 비로그인 상태일 때 카운트를 0으로 설정
+             }
+         });
+    </script>
+</header>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout/adminDefault}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 등록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/37.0.0/classic/ckeditor.js"></script>
+    <style>
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+    .editor-container {
+            max-height: 300px; /* 최대 높이 설정 */
+            overflow-y: auto; /* 세로 스크롤 활성화 */
+        }
+
+    #imagePreviewContainer {
+        text-align: center;
+    }
+
+    #imagePreview {
+        border: 1px solid #ccc;
+        padding: 5px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h2>상품 등록</h2>
+        <form th:action="@{/admin/register}" th:object="${productDto}" method="post" enctype="multipart/form-data">
+            <!-- 상품명 입력 -->
+            <div class="form-group">
+                <label for="productName">상품명</label>
+                <input type="text" id="productName" class="form-control" th:field="*{productName}" placeholder="상품명 입력">
+            </div>
+
+            <div class="form-group">
+                <label for="author">작가</label>
+                <input type="text" id="author" class="form-control" th:field="*{author}" placeholder="작가명 입력">
+            </div>
+
+            <div class="form-group">
+                <label for="authorDescription">소개글</label>
+                <textarea id="authorDescription" class="form-control" th:field="*{description}" rows="4" placeholder="작가 소개글 입력"></textarea>
+            </div>
+
+            <!-- 분류 셀렉트 -->
+            <div class="form-group">
+                <label for="category">분류</label>
+                <select id="category" class="form-control" th:field="*{category}">
+                    <option value="java">자바</option>
+                    <option value="sql">SQL</option>
+                    <option value="spring">스프링</option>
+                    <option value="backend">백엔드</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="price">상품금액</label>
+                <input type="number" id="price" class="form-control" th:field="*{price}" placeholder="상품금액 입력">
+            </div>
+
+            <div class="form-group">
+                <label for="stock">재고수량</label>
+                <input type="number" id="stock" class="form-control" th:field="*{stock}" placeholder="재고수량 입력">
+            </div>
+
+            <div class="form-group">
+                <label for="productImageUrl">상품 이미지</label>
+                <button type="button" class="btn btn-secondary" id="productImageButton">이미지 선택</button>
+                <input type="file" id="productImageUrl" name="productImageUrl" accept="image/*" style="display: none;">
+                <div id="imagePreviewContainer" style="margin-top: 10px;">
+                    <img id="imagePreview" src="#" alt="미리보기 이미지" style="display: none; max-width: 200px; max-height: 200px;">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="productDetails">상품 상세정보</label>
+                <div class="editor-container">
+                    <textarea id="productDetails" class="form-control" th:field="*{productDetails}" rows="4"
+                              placeholder="상품 상세정보 입력"></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">상품 등록</button>
+        </form>
+    </div>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#productDetails'), {
+                ckfinder: {
+                    uploadUrl: '/admin/imageUpload'
+                },
+                toolbar: [
+                    'heading', '|', 'bold', 'italic', '|', 'imageUpload', '|', 'undo', 'redo'
+                ]
+            })
+             .then(editor => {
+                 const editorElement = editor.ui.view.editable.element;
+                 editorElement.style.maxHeight = '300px';
+                 editorElement.style.overflowY = 'auto';
+             })
+             .catch(error => {
+                 console.error(error);
+             });
+
+        document.getElementById('productImageButton').addEventListener('click', function () {
+            document.getElementById('productImageUrl').click();
+        });
+
+        document.getElementById('productImageUrl').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById('imagePreview');
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</div>
+</body>
+</html>

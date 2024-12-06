@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+         .signup-container {
+            max-width: 500px; /* 최대 너비 조정 (원하는 너비로 설정) */
+            margin: auto; /* 중앙 정렬 */
+            background-color: #fff; /* 카드 배경색 */
+            border-radius: 8px; /* 모서리 둥글게 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+        }
+
+        h1 {
+            text-align: center; /* 제목 가운데 정렬 */
+            margin-bottom: 20px; /* 제목 아래 여백 */
+        }
+        .form-group {
+            margin-bottom: 15px; /* 입력 그룹 아래 여백 */
+        }
+        .btn mt-2 {
+            background-color: #007BFF; /* 버튼 배경색 */
+            border-radius: 5px; /* 버튼 모서리 둥글게 */
+            transition: background-color 0.3s; /* 배경색 전환 효과 */
+        }
+
+        .error {
+            color: red; /* 오류 메시지 색상 */
+            font-size: 12px; /* 오류 메시지 크기 */
+        }
+    </style>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+    <div class="signup-container">
+        <h1>회원가입</h1>
+
+        <form action="/user/joinProc" method="post" th:object="${userDto}" onsubmit="return validateForm(event)">
+            <input type="hidden" th:field="*{mileage}">
+            <div class="form-group">
+                <label for="nickname">닉네임</label>
+                <input type="text" id="nickname" th:field="*{nickname}" class="form-control" placeholder="닉네임을 입력해주세요"
+                       required>
+                <button type="button" class="btn mt-2" onclick="checkNickname()">닉네임 중복 확인</button>
+                <div class="error" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">아이디 오류</div>
+                <div id="nickname-error" class="error"></div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control"
+                       placeholder="비밀번호를 입력해주세요" required>
+                <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">아이디 오류</div>
+            </div>
+
+            <div class="form-group">
+                <label for="birthdate">생년월일</label>
+                <input type="date" id="birthdate" th:field="*{birthdate}" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="username">이메일</label>
+                <input type="email" id="username" th:field="*{username}" class="form-control" placeholder="이메일을 입력해주세요">
+                <button type="button" class="btn mt-2" onclick="sendVerificationCode()">인증번호 전송</button>
+                <div class="error" id="verificationCode-error"></div>
+                <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">이메일 오류</div>
+            </div>
+
+            <div id="verificationCodeForm" style="display: none;">
+                <div class="form-group">
+                    <label for="verificationCode">이메일 인증번호</label>
+                    <input type="text" id="verificationCode" class="form-control">
+                    <button type="button" class="btn mt-2" onclick="verifyCode()">인증번호 확인</button>
+                    <div class="error" id="verificationCode-input-error"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sample6_postcode">우편번호</label>
+                <input type="text" id="sample6_postcode" th:field="*{address.zipcode}" class="form-control"
+                       placeholder="우편번호">
+                <input type="button" class="btn mt-2" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+
+                <label for="sample6_address">주소</label>
+                <input type="text" id="sample6_address" th:field="*{address.address}" class="form-control"
+                       placeholder="주소"><br>
+
+                <label for="sample6_detailAddress">상세주소</label>
+                <input type="text" id="sample6_detailAddress" th:field="*{address.detailAddr}" class="form-control"
+                       placeholder="상세주소">
+
+                <label for="sample6_extraAddress">참고항목</label>
+                <input type="text" id="sample6_extraAddress" th:field="*{address.subAddr}" class="form-control"
+                       placeholder="참고항목">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">회원가입</button>
+        </form>
+    </div>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        let isNicknameValid = false;
+        let isEmailVerified = false;
+
+        // 인증번호 전송 함수
+       function sendVerificationCode() {
+           const username = document.getElementById('username').value;
+           const errorElement = document.getElementById('verificationCode-error');
+
+           if (!username) {
+               errorElement.textContent = "이메일을 입력해주세요.";
+               return;
+           }
+
+           fetch('/email/sendVerificationCode?username=' + username, {
+               method: 'POST',
+           })
+           .then(response => response.text())
+           .then(data => {
+               errorElement.textContent = "";
+               alert(data);
+               document.getElementById('verificationCodeForm').style.display = 'block';
+           })
+           .catch(error => {
+               alert("서버 오류가 발생했습니다.");
+           });
+       }
+
+       // 서버로 인증번호 확인 요청
+       function verifyCode() {
+            const verificationCode = document.getElementById('verificationCode').value;
+            const errorElement = document.getElementById('verificationCode-input-error');
+            const username = document.getElementById('username').value;
+
+            if (!verificationCode) {
+                errorElement.textContent = "인증번호를 입력해주세요.";
+                return;
+            }
+
+           fetch(`/email/verifyCode?verificationCode=${verificationCode}&username=${username}`, {
+            method: 'POST',
+            })
+            .then(response => response.json()) // JSON 형식으로 응답을 처리
+            .then(data => {
+            if (data.message === "인증번호가 확인되었습니다.") {
+                alert("인증 성공!");
+                isEmailVerified = true;
+            } else {
+                alert("인증 실패! 인증번호를 다시 확인해주세요.");
+            }
+        })
+            .catch(error => {
+                alert("서버 오류가 발생했습니다.");
+            });
+        }
+
+       function checkNickname() {
+           const nickname = document.getElementById('nickname').value;
+           const errorElement = document.getElementById('nickname-error');
+
+           if (!nickname) {
+               errorElement.textContent = "닉네임을 입력해주세요.";
+               return;
+           }
+
+           fetch('/user/checkNickname?nickname=' + nickname)
+               .then(response => response.json())
+               .then(data => {
+                   if (data) {
+                       errorElement.style.color = 'red';
+                       errorElement.textContent = "이미 존재하는 닉네임입니다.";
+                       isNicknameValid = false;
+                   } else {
+                       errorElement.textContent = "사용 가능한 닉네임입니다.";
+                       errorElement.style.color = 'green';
+                       isNicknameValid = true;
+                   }
+               })
+               .catch(error => {
+                   errorElement.textContent = "서버 오류가 발생했습니다.";
+               });
+       }
+        // 폼 제출 전에 이메일 인증과 닉네임 중복 체크 여부를 확인
+        function validateForm(event) {
+
+            if (!isNicknameValid) {
+                    alert("닉네임 중복 확인을 완료해주세요.");
+                    event.preventDefault();
+                    return false;
+                }
+            if (!isEmailVerified) {
+                alert("이메일 인증을 완료해주세요.");
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
+         // sample6_execDaumPostcode 함수 정의
+            function sample6_execDaumPostcode() {
+                new daum.Postcode({
+                    oncomplete: function(data) {
+                        var addr = ''; // 주소 변수
+                        var extraAddr = ''; // 참고항목 변수
+
+                        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                            addr = data.roadAddress;
+                        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                            addr = data.jibunAddress;
+                        }
+
+                        if(data.userSelectedType === 'R'){
+                            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                                extraAddr += data.bname;
+                            }
+                            if(data.buildingName !== '' && data.apartment === 'Y'){
+                                extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                            }
+                            if(extraAddr !== ''){
+                                extraAddr = ' (' + extraAddr + ')';
+                            }
+                            document.getElementById("sample6_extraAddress").value = extraAddr;
+                        } else {
+                            document.getElementById("sample6_extraAddress").value = '';
+                        }
+
+                        document.getElementById('sample6_postcode').value = data.zonecode;
+                        document.getElementById("sample6_address").value = addr;
+                        document.getElementById("sample6_detailAddress").focus();
+                    }
+                }).open();
+            }
+    </script>
+</div>
+</body>
+</html>

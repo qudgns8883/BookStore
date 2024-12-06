@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout/default}">
+<head>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        /* 상품 리스트 전체 레이아웃 */
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px auto;
+            padding: 0;
+            max-width: 1200px;
+        }
+
+        /* 상품 아이템 */
+        .product-item {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image {
+            width: 100%; /* 가로 크기를 부모 요소에 맞게 조정 */
+            height: 200px; /* 고정된 세로 크기 */
+            object-fit: contain
+            border-radius: 8px; /* 이미지 모서리를 둥글게 */
+        }
+
+        /* 상품 이름 */
+        .product-name {
+            font-size: 1.2rem;
+            margin: 15px 0;
+            color: #555;
+        }
+
+        /* 상품 가격 */
+        .product-price {
+            font-size: 1rem;
+            color: #ff5722;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>상품 리스트</h1>
+    <div class="product-list">
+        <div th:each="product : ${productList}" class="product-item">
+            <a th:href="@{'/product/' + ${product.id}}" class="product-link">
+                <img th:src="@{'/uploads/' + ${product.productImage}}"
+                     th:alt="${product.productName}" class="product-image" />
+            </a>
+            <h2 class="product-name" th:text="${product.productName}"></h2>
+            <p class="product-price" th:text="${product.price} + ' 원'"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
