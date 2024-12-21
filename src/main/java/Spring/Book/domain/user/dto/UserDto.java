@@ -8,7 +8,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@Builder(toBuilder = true)
+@NoArgsConstructor
 public class UserDto {
 
     private Long id;
@@ -28,6 +28,7 @@ public class UserDto {
     private Address address;
     private String createDate;
 
+    @Builder(toBuilder = true)
     private UserDto(Long id, String nickname, String password, String username,
                     String birthdate,Integer mileage, Role role, Address address, String createDate) {
         this.id = id;

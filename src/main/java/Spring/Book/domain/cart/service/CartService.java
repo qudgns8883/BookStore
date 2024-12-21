@@ -72,9 +72,7 @@ public class CartService {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
 
-        int mileage = user.getMileage();
-
-        List<CartEntity> cartItems = cartRepository.findByUserId(user.getId());
+        List<CartEntity> cartItems = cartRepository.findByUserIdWithProducts(user.getId());
 
         return cartItems.stream()
                 .map(cart -> {
@@ -93,7 +91,7 @@ public class CartService {
                             .build();
 
                     return CartDto.builder()
-                            .productId(cart.getId())
+                            .productId(cart.getProduct().getId())
                             .product(productDto)
                             .quantity(cart.getQuantity())
                             .build();
@@ -110,8 +108,8 @@ public class CartService {
 
         Optional<CartEntity> cartItemOptional = cartRepository.findByUserIdAndProductId(user.getId(), productId);
 
-        if (cartRepository.existsById(productId)) {
-            cartRepository.deleteById(productId);
+        if (cartItemOptional.isPresent()) {
+            cartRepository.delete(cartItemOptional.get());
             return true;
         }
         return false;

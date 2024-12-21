@@ -73,7 +73,7 @@ public class AdminProductService {
 
         if (!"전체상품".equals(status)) {
             productList = productList.stream()
-                    .filter(product -> product.getStatus().name().equals(status)) // 대소문자 구분
+                    .filter(product -> product.getStatus().name().equals(status))
                     .collect(Collectors.toList());
         }
 

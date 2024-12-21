@@ -1,6 +1,7 @@
 package Spring.Book.domain.admin.product.dto;
 
 
+import Spring.Book.domain.admin.product.entity.ProductEntity;
 import Spring.Book.domain.admin.product.entity.ProductStatus;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,5 +37,21 @@ public class ProductDto {
         this.productStatus = productStatus;
         this.createDate = createDate;
         this.author = author;
+    }
+
+    public static ProductDto fromProductEntity(ProductEntity productEntity) {
+        return ProductDto.builder()
+                .id(productEntity.getId())
+                .productName(productEntity.getProductName())
+                .author(productEntity.getAuthor())
+                .description(productEntity.getDescription())
+                .category(productEntity.getCategory())
+                .price(productEntity.getPrice())
+                .stock(productEntity.getStock())
+                .productImage(productEntity.getProductImage())
+                .productDetails(productEntity.getProductDetails())
+                .productStatus(productEntity.getStatus())
+                .createDate(productEntity.getCreateDate().toString())
+                .build();
     }
 }

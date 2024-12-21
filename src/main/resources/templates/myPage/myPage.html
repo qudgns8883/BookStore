@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/fragments/layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <style>
+        .tab-menu {
+            display: flex; /* 플렉스 박스를 사용하여 가로로 정렬 */
+            justify-content: center; /* 중앙 정렬 */
+            margin-top: 20px; /* 위쪽 여백 */
+            border-bottom: 2px solid #ddd; /* 하단 테두리 */
+        }
+
+        .tab-menu button {
+            flex: 1; /* 버튼들이 동일한 크기로 늘어남 */
+            padding: 10px; /* 내부 여백 */
+            background-color: #f9f9f9; /* 기본 배경 색상 */
+            border: none; /* 테두리 없음 */
+            border-bottom: 3px solid transparent; /* 기본 상태의 하단 테두리 투명 */
+            font-size: 16px; /* 글자 크기 */
+            cursor: pointer; /* 커서 모양을 포인터로 변경 */
+        }
+
+        .tab-menu button.active {
+            border-bottom: 3px solid #007bff; /* 활성화된 탭의 하단 테두리 색상 */
+            font-weight: bold; /* 글자를 두껍게 */
+        }
+
+        .content1 {
+            max-width: 800px; /* 최대 가로 너비 설정 */
+            margin: 20px auto; /* 상하 여백, 좌우 중앙 정렬 */
+            padding: 20px; /* 내부 여백 */
+            border: 1px solid #ddd; /* 테두리 */
+            border-radius: 8px; /* 모서리 둥글게 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            background-color: #fff; /* 배경 색상 */
+        }
+
+        .content {
+            max-width: 800px; /* 최대 가로 너비 설정 */
+            margin: 20px auto; /* 상하 여백, 좌우 중앙 정렬 */
+            padding: 20px; /* 내부 여백 */
+            border: 1px solid #ddd; /* 테두리 */
+            border-radius: 8px; /* 모서리 둥글게 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            background-color: #fff; /* 배경 색상 */
+        }
+
+        .hidden {
+            display: none; /* 요소를 숨김 */
+        }
+
+        table {
+            width: 100%; /* 테이블 너비 100% */
+            border-collapse: collapse; /* 테두리 합치기 */
+            margin-top: 20px; /* 상단 여백 */
+        }
+
+        th, td {
+            padding: 10px; /* 셀 내부 여백 */
+            text-align: left; /* 텍스트 왼쪽 정렬 */
+            border: 1px solid #ddd; /* 셀 테두리 */
+        }
+
+        th {
+            background-color: #f2f2f2; /* 헤더 배경 색상 */
+        }
+
+        .product-image {
+            max-width: 50px; /* 이미지 최대 너비 설정 */
+            height: auto; /* 비율 유지 */
+            border-radius: 4px; /* 이미지 모서리 둥글게 */
+        }
+
+        #modal {
+            display: none; /* 기본적으로 숨김 */
+            position: fixed;
+            z-index: 1000; /* 다른 요소 위에 표시 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+        }
+
+        #modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1 style="text-align: center;">마이페이지</h1>
+        <div class="tab-menu">
+            <button class="tab-link" data-target="purchase-history">구매내역</button>
+            <button class="tab-link" data-target="profile-edit">정보수정</button>
+            <button class="tab-link" data-target="review-history">리뷰내역</button>
+        </div>
+
+            <div class="content1" id="purchase-history">
+                <h2>구매내역</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>상품정보</th>
+                        <th>주문일자</th>
+                        <th>총 주문가격</th>
+                        <th>총 수량</th>
+                        <th>주문상세</th>
+                    </tr>
+                    </thead>
+                    <tbody id="purchase-data">
+                    <!-- 구매내역 데이터가 여기에 동적으로 추가됩니다. -->
+                    </tbody>
+                </table>
+            </div>
+
+        <div class="content1 hidden" id="profile-edit">
+            <h2>정보수정</h2>
+            <p>여기에 사용자의 프로필 수정 폼을 표시합니다.</p>
+            <!-- 정보 수정 내용을 여기에 추가 -->
+        </div>
+
+        <div class="content1 hidden" id="review-history">
+            <h2>리뷰내역</h2>
+            <p>여기에 사용자가 작성한 리뷰를 표시합니다.</p>
+            <!-- 리뷰 내역 내용을 여기에 추가 -->
+        </div>
+
+        <div id="modal" style="display:none;">
+            <div id="modal-content">
+                <!-- 모달 내용이 여기에 삽입됩니다. -->
+            </div>
+        </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 탭 클릭 이벤트 리스너 추가
+            document.querySelectorAll('.tab-link').forEach(tab => {
+                tab.addEventListener('click', function () {
+                    // 모든 탭에서 active 클래스 제거
+                    document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // 모든 컨텐츠 숨기기
+                    document.querySelectorAll('.content1').forEach(content => content.classList.add('hidden'));
+
+                    // 클릭한 탭의 타겟 컨텐츠 표시
+                    const target = this.getAttribute('data-target');
+                    const targetElement = document.getElementById(target);
+
+                    if (targetElement) {
+                        targetElement.classList.remove('hidden');
+
+                        if (target === 'purchase-history') {
+                        loadPurchaseHistory();
+                        }
+                    } else {
+                        console.error("Target element not found for:", target);
+                    }
+                });
+            });
+
+            // 초기 상태에서 구매 내역 표시
+            document.getElementById('purchase-history').classList.remove('hidden');
+        });
+
+       function loadPurchaseHistory() {
+            fetch('/myPage/getOrder')  // 서버 API URL
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const purchaseDataContainer = document.getElementById('purchase-data');
+                    purchaseDataContainer.innerHTML = ''; // 기존 데이터 초기화
+                    console.log(data);
+
+                    // 주문을 paymentId로 그룹화
+                    const groupedOrders = {};
+
+                    data.forEach(item => {
+                        const paymentId = item.paymentId;
+
+                        // paymentId로 그룹화
+                        if (!groupedOrders[paymentId]) {
+                            groupedOrders[paymentId] = [];
+                        }
+                        groupedOrders[paymentId].push(item);
+                    });
+
+                    // 그룹화된 주문을 테이블에 표시
+                    for (const paymentId in groupedOrders) {
+                        const orders = groupedOrders[paymentId];
+                        const orderCount = orders.length;
+
+                        const row = document.createElement('tr'); // 새로운 행 생성
+
+                        // 첫 번째 주문의 정보 표시
+                        const firstOrder = orders[0];
+
+                        let totalQuantity = 0; // 총 수량
+
+                        orders.forEach(order => {
+                            totalQuantity += order.quantity; // 수량 합산
+                        });
+
+                        row.innerHTML = `
+                             <td>
+                                <img src="/uploads/${firstOrder.product.productImage}" alt="${firstOrder.product.productName}" class="product-image" />
+                                ${firstOrder.product.productName}${orderCount > 1 ? ` 외 ${orderCount - 1}개` : ''}
+                            </td>
+                            <td>${firstOrder.createDate}</td>
+                            <td>${firstOrder.totalAmount}원</td>
+                            <td>${orderCount}종 ${totalQuantity}권</td>
+                            <td><button class="detail-button" data-item='${JSON.stringify(orders)}'>상세보기</button></td>
+                        `;
+                        purchaseDataContainer.appendChild(row); // 행을 테이블에 추가
+                    }
+
+                    // 상세보기 버튼 클릭 이벤트 리스너 추가
+                    document.querySelectorAll('.detail-button').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const itemData = JSON.parse(this.getAttribute('data-item')); // JSON 문자열을 객체로 변환
+                            openModal(itemData); // 모달 열기
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching purchase history:', error);
+                });
+        }
+
+        function openModal(orders) {
+            const modalContent = document.getElementById('modal-content');
+
+            // 모달 내용 초기화
+            modalContent.innerHTML = '<h2>주문 상세보기</h2>' +
+                            '<hr style="border: 1px solid #ccc; margin: 20px 0;">';
+
+            // 첫 번째 주문의 정보를 가져옵니다.
+            const firstOrder = orders[0];
+
+            const paymentId = firstOrder.paymentId.replace('order_', '');
+
+            // 주문 날짜, 배송 주소, 배송 요청 사항, 총 금액, 사용된 마일리지는 한 번만 표시
+            modalContent.innerHTML += `
+                <p><strong>주문 날짜:</strong> ${firstOrder.createDate}</p>
+                <p><strong>배송 주소:</strong> ${firstOrder.address}</p>
+                <p><strong>배송 요청사항:</strong> ${firstOrder.deliveryInstructions || '없음'}</p>
+                <br>
+                <h3>상품 정보</h3>
+            `;
+
+            // 각 주문의 상품 정보를 반복하여 추가
+            orders.forEach((order, index) => {
+                const product = order.product || {}; // 안전하게 접근
+                const productName = product.productName || '상품 정보 없음'; // 기본값 설정
+                const productImage = product.productImage || 'default-image.png'; // 기본 이미지 설정
+
+                const productDescription = product.description || '설명 없음';
+                const truncatedDescription = productDescription.length > 100 ? productDescription.substring(0, 100) + '...' : productDescription;
+
+                modalContent.innerHTML += `
+                    <hr style="border: 1px solid #ccc; margin: 20px 0;">
+                    <p><strong>상품명:</strong> ${productName}</p>
+                    <img src="/uploads/${productImage}" alt="${productName}" class="product-image" style="max-width: 100px; display: block; margin: 10px 0;" />
+                    <p><strong>상품 설명:</strong> ${truncatedDescription}</p>
+                    <p><strong>가격:</strong> ${product.price || '가격 정보 없음'}원</p>
+                    <p><strong>수량:</strong> ${order.quantity}</p>
+                `;
+            });
+
+            // 결제 정보 추가
+            modalContent.innerHTML += `
+                <br>
+                <h3>결제 정보</h3>
+                <hr style="border: 1px solid #ccc; margin: 20px 0;">
+                <p><strong>결제 번호:</strong> ${paymentId}</p>
+                <p><strong>총 금액:</strong> ${firstOrder.totalAmount}원</p>
+                <p><strong>사용된 마일리지:</strong> ${firstOrder.mileageUsed}원</p>
+                <button onclick="closeModal()">닫기</button>
+            `;
+
+            document.getElementById('modal').style.display = 'block'; // 모달 열기
+        }
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none'; // 모달 닫기
+        }
+    </script>
+</div>
+</body>
+</html>

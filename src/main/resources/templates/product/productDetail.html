@@ -139,6 +139,7 @@
                     <button onclick="decreaseQuantity()">-</button>
                     <span id="quantity">1</span>
                     <button onclick="increaseQuantity()">+</button>
+                    <span class="stock-info" id="stock-info" th:text="'재고 수량: ' + ${product.stock}">재고 수량: 0</span> <!-- 재고 수량 추가 -->
                 </div>
 
                 <div class="price-container">
@@ -166,32 +167,33 @@
         </div>
 
         <div class="reviews" id="reviews">
-            <h3>리뷰 보기</h3>
+            <h3>리뷰</h3>
             <p>상품에 대한 리뷰를 여기에 표시합니다.</p>
             <div class="review-item">
-                <strong>사용자1:</strong> 이 상품은 정말 좋습니다!
+
             </div>
-            <div class="review-item">
-                <strong>사용자2:</strong> 기대 이상이에요.
-            </div>
-            <div class="review-item">
-                <strong>사용자3:</strong> 가격 대비 성능이 뛰어나요.
-            </div>
+
+            <h4>리뷰 작성</h4>
+            <textarea id="reviewText" placeholder="리뷰를 작성하세요..." rows="4" cols="50"></textarea>
+            <button onclick="submitReview()">리뷰 제출</button>
         </div>
     </div>
     <script>
         // 초기 수량 및 가격 설정
         let quantity = 1;
         const pricePerUnit = parseFloat(document.getElementById('totalPrice').innerText.replace(/[^0-9]/g, ''));
-
         const initialPoints = pricePerUnit * 0.05;
         document.getElementById('pointsEarned').innerText = '₩' + initialPoints.toLocaleString();
-
+        const stockQuantity = parseInt(document.getElementById('stock-info').innerText.replace('재고 수량: ', '')); // 재고 수량
 
         // 수량 증가 함수
         function increaseQuantity() {
-            quantity++;
-            updatePrice();
+            if (quantity < stockQuantity) {
+                quantity++;
+                updatePrice();
+            } else {
+                alert('더 이상 증가할 수 없습니다.');
+            }
         }
 
         // 수량 감소 함수
@@ -228,8 +230,16 @@
 
         //장바구니 추가
         function addToCart() {
+            const userLoggedIn = [[${userLoggedIn}]];
             const productId = document.getElementById('product-id').value;
             const quantity = parseInt(document.getElementById('quantity').innerText);
+
+            // 로그인 상태가 아닐 경우 로그인 페이지로 리다이렉트
+            if (!userLoggedIn) {
+                alert('로그인 후 이용가능합니다.');
+                window.location.href = '/login'; // 로그인 페이지 URL
+                return;
+            }
 
             const cartItem = {
                 productId: productId,
@@ -253,6 +263,42 @@
             .catch(error => {
                 console.error('Error:', error);
                 alert('장바구니 추가에 오류가 발생했습니다.');
+            });
+        }
+        function submitReview() {
+            const reviewText = document.getElementById('reviewText').value;
+
+            if (!reviewText) {
+                alert('리뷰 내용을 입력해 주세요.');
+                return;
+            }
+
+            // 서버로 POST 요청 보내기
+            fetch('/review/addReview', { // 서버의 리뷰 제출 API URL로 변경
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    review: reviewText,
+                    productId: /* 제품 ID를 여기에 넣어야 합니다 */
+                }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 리뷰가 성공적으로 제출되었을 때
+                alert('리뷰가 성공적으로 제출되었습니다.');
+                document.getElementById('reviewText').value = ''; // 텍스트 영역 초기화
+                loadReviews(); // 리뷰 목록 새로 고침
+            })
+            .catch(error => {
+                console.error('Error submitting review:', error);
+                alert('리뷰 제출 중 오류가 발생했습니다.');
             });
         }
     </script>

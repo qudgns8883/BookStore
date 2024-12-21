@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,11 +37,13 @@ public class UserController {
     }
 
     @GetMapping("/user/signup")
-    public String signup(@ModelAttribute("userDto") UserDto userDto){
+    public String signup(@ModelAttribute("userDto") UserDto userDto, Model model) {
 
-        if (userDto.getMileage() == null) {
-            userDto.setMileage(1000);
-        }
+        UserDto updatedUserDto = userDto.toBuilder()
+                .mileage(userDto.getMileage() != null ? userDto.getMileage() : 1000)
+                .build();
+
+        model.addAttribute("userDto", updatedUserDto);
 
         return "user/signup";
     }

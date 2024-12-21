@@ -20,7 +20,7 @@ public class ProductEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String productName;
     private String author;
     @Column(length = 4000)
@@ -40,9 +40,10 @@ public class ProductEntity extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @Builder
-    public ProductEntity(String productName, String author, String description, String category, int price, int stock,
+    @Builder(toBuilder = true)
+    public ProductEntity(Long id, String productName, String author, String description, String category, int price, int stock,
                          String productImage, String productDetails,ProductStatus status, UserEntity user) {
+        this.id = id;
         this.productName = productName;
         this.author = author;
         this.description = description;
@@ -53,5 +54,13 @@ public class ProductEntity extends BaseTimeEntity {
         this.productDetails = productDetails;
         this.status = status;
         this.user = user;
+    }
+
+    // 재고 감소 메소드
+    public void decreaseStock(int quantity) {
+        if (this.stock < quantity) {
+            throw new IllegalArgumentException("재고가 부족합니다.");
+        }
+        this.stock -= quantity; // 재고 차감
     }
 }

@@ -204,7 +204,7 @@
             <span>마일리지:</span>
             <input type="number" id="mileageUsed" placeholder="사용할 마일리지" min="0" onchange="updateTotalSummary()">
             <span>원</span>
-            <button id="applyMileageBtn" onclick="applyMileage()">적용하기</button><br>
+            <button id="applyMileageBtn" >적용하기</button><br>
             <span id="mileageAvailable" th:text="'(' + ${userMileage} + '원 보유중)'" > 마이리지</span>
         </div>
         <hr>
@@ -214,7 +214,7 @@
         </div>
 
         <a href="/home" class="checkout-button">계속 쇼핑하기</a>
-        <button class="checkout-button">결제하기</button>
+        <button class="checkout-button" onclick="proceedToPayment()">주문하기</button>
 
     </div>
     <script>
@@ -305,8 +305,16 @@
                 totalPrice += pricePerUnit * quantity;
             });
 
-            // 마일리지 사용
-            const mileageUsed = parseInt(document.getElementById('mileageUsed').value) || 0;
+            const mileageUsedInput = document.getElementById('mileageUsed');
+            const mileageUsed = parseInt(mileageUsedInput.value) || 0;
+            const userMileage = parseInt(document.getElementById('mileageAvailable').innerText.match(/\d+/)[0]); // 보유 마일리지 추출
+
+            // 마일리지 체크
+            if (mileageUsed > userMileage) {
+                alert(`보유 중인 마일리지(${userMileage}원)보다 더 많은 마일리지를 입력할 수 없습니다.`);
+                mileageUsedInput.value = 0; // 입력값 초기화
+                return;
+            }
 
             // 총 결제 금액 계산
             const totalAmount = totalPrice - mileageUsed;
@@ -338,6 +346,18 @@
                 });
             }
         }
+
+         function proceedToPayment() {
+        // 총 상품 수, 총 가격, 입력한 마일리지, 총 결제 금액
+        const totalQuantity = document.getElementById('totalQuantity').innerText;
+        const totalPrice = document.getElementById('totalPrice').innerText.replace(' 원', '').replace(/,/g, '');
+        const mileageUsed = document.getElementById('mileageUsed').value;
+        const totalAmount = document.getElementById('totalAmount').innerText.replace(' 원', '').replace(/,/g, '');
+
+        // GET 요청으로 결제 페이지로 이동
+        const url = `/payment?totalQuantity=${totalQuantity}&totalPrice=${totalPrice}&mileageUsed=${mileageUsed}&totalAmount=${totalAmount}`;
+        window.location.href = url; // 결제 페이지로 리다이렉트
+    }
     </script>
 </div>
 </body>

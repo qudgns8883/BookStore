@@ -2,6 +2,8 @@ package Spring.Book.domain.user.entity;
 
 import Spring.Book.domain.admin.product.entity.ProductEntity;
 import Spring.Book.domain.cart.entity.CartEntity;
+import Spring.Book.domain.order.entity.OrderEntity;
+import Spring.Book.domain.payment.entity.PaymentEntity;
 import Spring.Book.domain.user.dto.Address;
 import Spring.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -31,6 +33,7 @@ public class UserEntity extends BaseTimeEntity {
     private String username;
     @NotEmpty
     private String birthdate;
+    @Setter
     private Integer mileage;
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -43,9 +46,17 @@ public class UserEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true )
     private List<CartEntity> carts = new ArrayList<>();
 
-    @Builder
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true )
+    private List<PaymentEntity> payments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true )
+    private List<OrderEntity> orderEntities = new ArrayList<>();
+
+    @Builder(toBuilder = true)
     private UserEntity(Long id, String nickname, String password, String username,
-                    String birthdate, Integer mileage,Role role, Address address) {
+                       String birthdate, Integer mileage, Role role, Address address,
+                       List<ProductEntity> products, List<CartEntity> carts,
+                       List<PaymentEntity> payments, List<OrderEntity> orderEntities) {
         this.id = id;
         this.nickname = nickname;
         this.password = password;
@@ -54,6 +65,10 @@ public class UserEntity extends BaseTimeEntity {
         this.mileage = mileage;
         this.role = role;
         this.address = address;
+        this.products =  products ;
+        this.carts = carts;
+        this.payments = payments; // null 체크
+        this.orderEntities = orderEntities; // null 체크
     }
 
     public String getRoleAsString() {
@@ -71,5 +86,9 @@ public class UserEntity extends BaseTimeEntity {
         carts.add(cart);
     }
 
+    public void addPayment(PaymentEntity payment){
+        payment.setUser(this);
+        payments.add(payment);
+    }
 
 }

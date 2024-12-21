@@ -19,7 +19,7 @@ public class PerformanceAspect {
     // 메소드 깊이를 추적하기 위한 스레드 로컬 변수
     private ThreadLocal<Integer> callDepth = ThreadLocal.withInitial(() -> 0);
 
-    @Around("execution(public * Spring.global..*(..))")
+    @Around("execution(public * Spring.Book..*(..))")
     public Object logMethodCall(ProceedingJoinPoint joinPoint) throws Throwable {
         // 메소드 실행 시작 시간 기록
         long start = System.currentTimeMillis();

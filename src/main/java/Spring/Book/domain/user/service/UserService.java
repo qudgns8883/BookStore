@@ -70,5 +70,21 @@ public class UserService {
         return userRepository.findByNickname(username)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
     }
+
+    public UserDto getCurrentUserinfo() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        UserEntity userEntity = userRepository.findByNickname(username)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+
+        return UserDto.builder()
+                .id(userEntity.getId())
+                .nickname(userEntity.getNickname())
+                .username(userEntity.getUsername())
+                .mileage(userEntity.getMileage())
+                .address(userEntity.getAddress())
+                .build();
+
+    }
 }
 

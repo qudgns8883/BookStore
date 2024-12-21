@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+        .cart-table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin: 0 auto;
+        }
+        .cart-table th, .cart-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .cart-table th {
+            background-color: #f2f2f2;
+        }
+
+        .header-container {
+            width: 50%; /* 테이블의 너비와 동일하게 설정 */
+            margin: 0 auto; /* 중앙 정렬 */
+        }
+
+        .header-info {
+            display: flex; /* 플렉스 박스를 사용하여 양쪽 끝으로 정렬 */
+            justify-content: space-between; /* 양쪽 끝으로 정렬 */
+            align-items: center; /* 세로 방향 중앙 정렬 */
+            font-size: 14px;
+            margin-bottom: 10px; /* 아래쪽 여백 */
+        }
+        button {
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input[type="text"] {
+            width: 60%; /* 입력 필드 너비 조정 */
+            margin-left: 10px; /* 입력 필드와 레이블 간 간격 */
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        textarea {
+            width: 60%; /* 입력 필드 너비 조정 */
+            margin-left: 10px; /* 입력 필드와 레이블 간 간격 */
+            padding: 5px;
+            border: 1px solid #ccc;
+            height: 40px;
+            border-radius: 4px;
+        }
+       .summary-item span {
+            font-size: 16px;
+            color: #333;
+            flex: 1; /* 균등 분배 */
+        }
+
+        .total-amount span {
+            font-weight: bold;
+            font-size: 18px;
+            color: #007bff; /* 강조 색상 */
+        }
+
+        .cart-table td.product-name {
+            width: 600px; /* 상품명 칸의 너비를 200px로 설정 */
+            text-align: center;
+        }
+
+        .checkout-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block; /* 중앙 정렬을 위해 inline-block으로 설정 */
+            transition: background-color 0.3s;
+            margin-top: 15px; /* 버튼과 다른 요소 간의 간격 */
+        }
+
+        .checkout-button:hover {
+            background-color: #0056b3;
+        }
+
+        .product-name {
+            text-align: left; /* 왼쪽 정렬 */
+            width: 600px; /* 상품명 칸의 너비를 설정 */
+        }
+
+        .product-info {
+            display: flex; /* 플렉스 박스를 사용하여 이미지와 텍스트를 정렬 */
+            align-items: flex-start; /* 세로 방향 정렬 */
+        }
+
+        .product-image {
+            width: 70px; /* 이미지 크기 설정 */
+            height: 70px; /* 이미지 크기 설정 */
+            margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조정 */
+        }
+
+        .text-info {
+            display: flex;
+            flex-direction: column; /* 세로 방향으로 텍스트 정렬 */
+        }
+
+        .product-title {
+            font-weight: bold; /* 제목 강조 */
+        }
+
+        .product-description {
+            color: #666; /* 소개글 색상 조정 */
+            margin-top: 3px; /* 제목과 소개글 사이의 간격 조정 */
+            font-size: 12px
+        }
+
+        .quantity-input {
+            width: 40px; /* 원하는 너비로 설정 */
+            height: 20px; /* 원하는 높이로 설정 */
+            text-align: center; /* 텍스트 중앙 정렬 */
+        }
+
+         .point-description {
+            font-size: 0.8em; /* 전체 글자 크기를 줄이되, 보이도록 설정 */
+        }
+
+         .mileage-input {
+            width: 100px; /* 너비 */
+            height: 30px; /* 높이 */
+            padding: 5px; /* 내부 여백 */
+            font-size: 10px; /* 텍스트 크기 */
+        }
+
+        .total-summary {
+                margin-top: 20px;
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                text-align: center; /* 중앙 정렬 */
+                width: 50%;
+                margin: 0 auto;
+        }
+          .shipping-info {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: 0 auto; /* 중앙 정렬 */
+        }
+    </style>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>결제하기</h1>
+    <div class="header-container">
+        <div class="header-info">
+            <span class="left-info" id="cartItemCount" th:text="'총 ' + ${cartItemCount} + ' 건'">총 4 건</span>
+            <span class="right-info">1. 장바구니 ><strong> 2. 결제</strong> > 3. 결제내역</span>
+        </div>
+    </div>
+    <table class="cart-table">
+        <thead>
+        <tr>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>수량</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cart : ${cartItems}">
+            <td class="product-name">
+                <div class="product-info">
+                    <img th:src="@{'/uploads/' + ${cart.product.productImage}}" alt="상품 이미지" class="product-image">
+                    <div class="text-info">
+                        <span th:text="${cart.product.productName}" class="product-title"></span>
+                        <span th:text="${#strings.abbreviate(cart.product.description, 105)}" class="product-description"></span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <span data-product-id="${cart.productId}" th:attr="data-price=${cart.product.price}" data-price="${cart.product.price}" th:text="${T(java.lang.String).format('%,d', (cart.product.price))}"></span> 원<br>
+                <span class="point-description" th:text="'포인트: ' + ${T(java.lang.String).format('%,.0f', (cart.product.price * cart.quantity * 0.05))} + ' 원 적립'"></span>
+            </td>
+            <td>
+                <span class="quantity-input" th:text="${cart.quantity}" ></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="total-summary">
+        <h4>총합</h4>
+        <div class="summary-item">
+            <span>총 상품 수:</span>
+            <span id="totalQuantity" th:text="${totalQuantity}"></span>
+        </div>
+        <div class="summary-item">
+            <span>상품 가격:</span>
+            <span id="totalPrice" th:text="${totalPrice} + ' 원'">0 원</span>
+        </div>
+
+        <div class="summary-item">
+            <span>적용한 마일리지: </span>
+
+            <span id="mileageUsed" th:text="${mileageUsed} + ' 원'">원</span>
+
+        </div>
+        <hr>
+        <div class="summary-item total-amount">
+            <span>총 결제 금액:</span>
+            <span id="totalAmount" th:text="${totalAmount}">0 원</span>
+        </div>
+    </div>
+
+    <h3>배송 정보</h3>
+    <div class="shipping-info">
+        <div class="form-group">
+            <label for="recipientName">받는 사람:</label>
+            <input type="text" id="recipientName" th:value="${user.nickname}" placeholder="받는 사람 이름" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="zipcode">우편번호:</label>
+            <input type="text" id="zipcode" th:value="${user.address.zipcode}" placeholder="우편번호" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="shippingAddress">배송 주소:</label>
+            <input type="text" id="shippingAddress" th:value="${user.address.address}" placeholder="배송 주소" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="detailAddr">상세 주소:</label>
+            <input type="text" id="detailAddr" th:value="${user.address.detailAddr}" placeholder="상세 주소" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="deliveryInstructions">배송 요청 사항:</label>
+            <textarea id="deliveryInstructions" placeholder="요청 사항을 입력해 주세요"></textarea>
+        </div>
+    </div>
+    <h3>결제 수단</h3>
+    <div class="shipping-info">
+        <div class="payment-buttons">
+            <button class="checkout-button" type="button" onclick="submitPayment()">카카오페이 결제</button>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        const cartItems = /*[[${cartItems}]]*/ [];
+    </script>
+    <script>
+        console.log(cartItems);
+        console.log('Cart Items:', JSON.stringify(cartItems));
+        function submitPayment() {
+            // 배송 정보 수집
+            const recipientName = document.getElementById('recipientName').value;
+            const zipcode = document.getElementById('zipcode').value;
+            const shippingAddress = document.getElementById('shippingAddress').value;
+            const detailAddr = document.getElementById('detailAddr').value;
+            const deliveryInstructions = document.getElementById('deliveryInstructions').value;
+
+            // 총 결제 금액 수집
+            const totalAmount = document.getElementById('totalAmount').innerText.replace(' 원', '').replace(/,/g, '');
+            const mileageUsed = document.getElementById('mileageUsed').innerText.replace(' 원', '').replace(/,/g, '');
+            const totalPrice = document.getElementById('totalPrice').innerText.replace(' 원', '').replace(/,/g, '');
+
+            const earnedMileage = Math.floor(totalPrice * 0.05);
+
+            // cartItems가 비어 있는지 체크
+            if (cartItems.length === 0) {
+                alert("장바구니에 상품이 없습니다."); // 경고 메시지
+                return;
+            }
+
+            // 아임포트 결제 요청
+            IMP.init('imp11253288'); // 아임포트에서 발급받은 키로 초기화
+            IMP.request_pay({
+                pg: 'kakaopay', // PG사
+                pay_method: 'card', // 결제 수단
+                merchant_uid: 'order_' + new Date().getTime(), // 주문 고유 ID
+                name: '구매 상품', // 상품명
+                amount: totalAmount, // 결제 금액
+                buyer_name: recipientName, // 구매자 이름
+                buyer_addr: `${shippingAddress} ${detailAddr}`, // 배송 주소
+                buyer_postcode: zipcode, // 우편번호
+            }, function (response) {
+                if (response.success) {
+                    // 결제 성공
+                    alert('결제가 완료되었습니다.');
+                     // AJAX 요청으로 결제 정보 서버에 저장
+                    $.ajax({
+                        url: '/payment/saveOrder', // 결제 정보를 저장할 서버 API
+                        method: 'POST',
+                        contentType: 'application/json', // JSON 형식으로 전송
+                        data: JSON.stringify({
+                            orderId: response.merchant_uid, // 주문 고유 ID
+                            amount: totalAmount, // 결제 금액
+                            recipientName: recipientName, // 받는 사람 이름
+                            shippingAddress: `${shippingAddress} ${detailAddr}`, // 배송 주소
+                            deliveryInstructions: deliveryInstructions, // 배송 요청 사항
+                            cartDto: cartItems, // 상품 ID와 수량을 포함
+                            mileageUsed: mileageUsed,
+                            earnedMileage: earnedMileage
+                        }),
+                        success: function (data) {
+                            console.log('결제 정보가 성공적으로 저장되었습니다:', data);
+                            window.location.href = `/order/success?orderId=${response.merchant_uid}`;                        },
+                        error: function (error) {
+                            console.error('결제 정보를 저장하는 데 실패하였습니다:', error);
+                        }
+                    });
+                } else {
+                    // 결제 실패
+                    alert('결제에 실패하였습니다: ' + response.error_msg);
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

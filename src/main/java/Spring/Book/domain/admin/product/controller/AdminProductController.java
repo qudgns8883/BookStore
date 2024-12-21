@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,8 +26,12 @@ public class AdminProductController {
     private final AdminProductService adminProductService;
 
     @PostMapping("/register")
-    public String registerProduct(@ModelAttribute ProductDto productDto,
+    public String registerProduct(@ModelAttribute ProductDto productDto, BindingResult result,
                                   @RequestParam("productImageUrl") MultipartFile file) {
+        if (result.hasErrors()) {
+            // 에러 처리 로직
+            return "user/signup"; // 에러가 있는 경우 다시 폼으로 돌아가기
+        }
 
         String imageUrl = adminProductService.storeFile(file);
         adminProductService.register(productDto, imageUrl);
