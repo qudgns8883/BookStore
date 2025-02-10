@@ -7,6 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상품정보</title>
     <style>
+
+        .review-answer {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        .answer-label {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .answer-content {
+            font-style: italic;
+            color: #333;
+        }
+        .spacing1 {
+            margin-left: 40px; /* 원하는 간격 조정 */
+        }
+
+        .spacing2 {
+            margin-left: 60px; /* 원하는 간격 조정 */
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f8f8;
@@ -113,13 +139,23 @@
             justify-content: space-between; /* 가격과 포인트를 양쪽으로 정렬 */
             align-items: center; /* 세로 정렬 */
         }
+
+        .filled-star {
+            color: gold; /* 채워진 별 색상 */
+        }
+
+        .empty-star {
+            color: lightgray; /* 빈 별 색상 */
+        }
+
+
     </style>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="product-card">
         <div class="product-info">
-            <!-- 상품 이미지 -->
+
             <img class="product-image" th:src="@{'/uploads/' + ${product.productImage}}" alt="상품 이미지">
 
             <div class="product-details">
@@ -129,17 +165,22 @@
                 <p class="product-author" th:text="${product.author} + ' 지음'">작가명</p>
                 <p class="product-price" id="totalPrice" th:text="'₩' + ${product.price}">가격</p>
 
-                <!-- 별점 및 리뷰 수 -->
-                <p>별점: ★★★★☆</p>
-                <p>리뷰 수: [리뷰 수]</p>
+                <p>별점:
+                    <span th:each="i : ${#numbers.sequence(0, 4)}">
+                      <span th:if="${averageRating > i + 0.5}" class="filled-star">★</span>
+                      <span th:if="${averageRating <= i + 0.5}" class="empty-star">☆</span>
+                    </span>
+                    <span th:text="${averageRating}"></span>
+                </p>
+                <p>리뷰 수: <span th:text="${reviewCount}">0</span></p>
 
-                <div class="divider"></div> <!-- 구분선 추가 -->
+                <div class="divider"></div>
 
                 <div class="quantity-container">
                     <button onclick="decreaseQuantity()">-</button>
                     <span id="quantity">1</span>
                     <button onclick="increaseQuantity()">+</button>
-                    <span class="stock-info" id="stock-info" th:text="'재고 수량: ' + ${product.stock}">재고 수량: 0</span> <!-- 재고 수량 추가 -->
+                    <span class="stock-info" id="stock-info" th:text="'재고 수량: ' + ${product.stock}">재고 수량: 0</span>
                 </div>
 
                 <div class="price-container">
@@ -147,7 +188,7 @@
                     <p>(포인트: <span id="pointsEarned">0</span> 적립)</p>
                 </div>
 
-                <div class="divider"></div> <!-- 구분선 추가 -->
+                <div class="divider"></div>
 
                 <div class="product-actions">
                     <button onclick="addToCart()">장바구니 담기</button>
@@ -168,25 +209,48 @@
 
         <div class="reviews" id="reviews">
             <h3>리뷰</h3>
-            <p>상품에 대한 리뷰를 여기에 표시합니다.</p>
             <div class="review-item">
-
+                <div th:each="review : ${reviews}">
+                    <p>
+                        <strong th:text="${review.author}">작성자</strong>
+                        <span class="spacing1">평점:</span>
+                        <span th:text="${review.rating}">평점</span> ★
+                    </p>
+                    <p>
+                        <span th:text="${review.review}">리뷰 내용</span>
+                        <span class="spacing2" th:text="${review.createDate}">작성일</span>
+                    </p>
+                    <div th:if="${review.answer != null}" class="review-answer">
+                        <span class="answer-label"><strong>관리자 답변:</strong>
+                        <span class="answer-content" th:text="${review.answer}"></span>
+                    </div>
+                    <div class="divider"></div>
+                </div>
             </div>
 
-            <h4>리뷰 작성</h4>
-            <textarea id="reviewText" placeholder="리뷰를 작성하세요..." rows="4" cols="50"></textarea>
+            <div id="rating">
+                <span>평점: </span>
+                <span class="star" onclick="setRating(1)">★</span>
+                <span class="star" onclick="setRating(2)">★</span>
+                <span class="star" onclick="setRating(3)">★</span>
+                <span class="star" onclick="setRating(4)">★</span>
+                <span class="star" onclick="setRating(5)">★</span>
+                <input type="hidden" id="ratingValue" value="0">
+            </div>
+
+            <textarea id="reviewText" placeholder="리뷰를 작성하세요..." rows="1" cols="50"></textarea>
             <button onclick="submitReview()">리뷰 제출</button>
         </div>
     </div>
     <script>
-        // 초기 수량 및 가격 설정
+
         let quantity = 1;
+        let selectedRating = 0;
         const pricePerUnit = parseFloat(document.getElementById('totalPrice').innerText.replace(/[^0-9]/g, ''));
         const initialPoints = pricePerUnit * 0.05;
         document.getElementById('pointsEarned').innerText = '₩' + initialPoints.toLocaleString();
         const stockQuantity = parseInt(document.getElementById('stock-info').innerText.replace('재고 수량: ', '')); // 재고 수량
 
-        // 수량 증가 함수
         function increaseQuantity() {
             if (quantity < stockQuantity) {
                 quantity++;
@@ -196,7 +260,6 @@
             }
         }
 
-        // 수량 감소 함수
         function decreaseQuantity() {
             if (quantity > 1) {
                 quantity--;
@@ -204,7 +267,6 @@
             }
         }
 
-        // 가격 업데이트 함수
         function updatePrice() {
             document.getElementById('quantity').innerText = quantity;
             const totalPrice = pricePerUnit * quantity;
@@ -214,7 +276,6 @@
             document.getElementById('pointsEarned').innerText = '₩' + points.toLocaleString();
         }
 
-        // 설명 및 리뷰 전환 함수
         function showDescription() {
             document.getElementById('description').style.display = 'block';
             document.getElementById('reviews').style.display = 'none';
@@ -225,19 +286,16 @@
             document.getElementById('description').style.display = 'none';
         }
 
-        // 기본적으로 상품 설명을 표시
         showDescription();
 
-        //장바구니 추가
         function addToCart() {
             const userLoggedIn = [[${userLoggedIn}]];
             const productId = document.getElementById('product-id').value;
             const quantity = parseInt(document.getElementById('quantity').innerText);
 
-            // 로그인 상태가 아닐 경우 로그인 페이지로 리다이렉트
             if (!userLoggedIn) {
                 alert('로그인 후 이용가능합니다.');
-                window.location.href = '/login'; // 로그인 페이지 URL
+                window.location.href = '/login';
                 return;
             }
 
@@ -246,7 +304,7 @@
                 quantity: quantity
             };
 
-            fetch('/cart/add', { // userId를 쿼리로 전달하지 않음
+            fetch('/cart/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -265,15 +323,37 @@
                 alert('장바구니 추가에 오류가 발생했습니다.');
             });
         }
-        function submitReview() {
-            const reviewText = document.getElementById('reviewText').value;
 
+        function setRating(rating) {
+            selectedRating = rating; // 선택된 평점 저장
+            document.getElementById('ratingValue').value = rating; // 히든 필드에 저장
+            updateStars(); // 별점 UI 업데이트
+        }
+
+        function updateStars() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < selectedRating) {
+                    star.style.color = 'gold'; // 선택된 별점 색상
+                } else {
+                    star.style.color = 'gray'; // 비선택된 별점 색상
+                }
+            });
+        }
+
+        function submitReview() {
+            const ratingValue = parseInt(document.getElementById('ratingValue').value, 10);
+            const reviewText = document.getElementById('reviewText').value;
+            const productId = parseInt(document.getElementById('product-id').value, 10);
             if (!reviewText) {
                 alert('리뷰 내용을 입력해 주세요.');
                 return;
             }
+             if (ratingValue === 0) {
+                alert('평점을 선택해 주세요.');
+                return;
+            }
 
-            // 서버로 POST 요청 보내기
             fetch('/review/addReview', { // 서버의 리뷰 제출 API URL로 변경
                 method: 'POST',
                 headers: {
@@ -281,24 +361,47 @@
                 },
                 body: JSON.stringify({
                     review: reviewText,
-                    productId: /* 제품 ID를 여기에 넣어야 합니다 */
+                    rating: ratingValue,
+                    productId: productId
                 }),
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                if (response.status === 403) {
+                    alert('구매 내역이 없으므로 리뷰를 작성할 수 없습니다.');
+                    return Promise.reject('Forbidden');
+                }
+                if (response.status === 409) {
+                    alert('이미 리뷰를 작성하셨습니다.');
+                    return Promise.reject('Already Reviewed');
                 }
                 return response.json();
             })
             .then(data => {
-                // 리뷰가 성공적으로 제출되었을 때
                 alert('리뷰가 성공적으로 제출되었습니다.');
                 document.getElementById('reviewText').value = ''; // 텍스트 영역 초기화
-                loadReviews(); // 리뷰 목록 새로 고침
+                selectedRating = 0; // 평점 초기화
+                updateStars(); // 별점 UI 초기화
+                updateReviews(data); // 리뷰 목록 업데이트
             })
             .catch(error => {
+                if (error === 'Already Reviewed' || error === 'Forbidden') return;
                 console.error('Error submitting review:', error);
                 alert('리뷰 제출 중 오류가 발생했습니다.');
+            });
+        }
+
+        function updateReviews(reviews) {
+            const reviewsContainer = document.querySelector('.review-item'); // 리뷰를 표시할 HTML 요소
+            reviewsContainer.innerHTML = ''; // 기존 리뷰 초기화
+
+            reviews.forEach(review => {
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'review'; // 클래스 추가 (스타일링 용도)
+                reviewElement.innerHTML = `
+                    <p><strong>${review.author}</strong>: <span>${review.review}</span></p>
+                    <p>평점: <span>${review.rating}</span> ★</p>
+                `;
+                reviewsContainer.appendChild(reviewElement); // 리뷰 요소 추가
             });
         }
     </script>

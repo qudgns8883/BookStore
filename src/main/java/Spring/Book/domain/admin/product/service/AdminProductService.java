@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static Spring.Book.domain.admin.product.dto.ProductDto.fromProductEntity;
+
 @Service
 public class AdminProductService {
 
@@ -108,18 +110,7 @@ public class AdminProductService {
         List<ProductEntity> productEntities = productRepository.findAll();
 
         return productEntities.stream()
-                .map(product -> ProductDto.builder()
-                        .id(product.getId())
-                        .productName(product.getProductName())
-                        .author(product.getAuthor())
-                        .description(product.getDescription())
-                        .productImage(product.getProductImage())
-                        .category(product.getCategory())
-                        .price(product.getPrice())
-                        .stock(product.getStock())
-                        .productStatus(product.getStatus())
-                        .createDate(product.getCreateDateAsString())
-                        .build())
+                .map(ProductDto::fromProductEntity)
                 .collect(Collectors.toList());
     }
 
@@ -143,5 +134,34 @@ public class AdminProductService {
         } catch (IOException e) {
             throw new RuntimeException("Could not store file: " + e.getMessage());
         }
+    }
+
+    public ProductDto getProductById(Long id) {
+        ProductEntity product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+        return fromProductEntity(product);
+    }
+
+    public void updateProduct(Long id, ProductDto productDto, String imageUrl) {
+        ProductEntity product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+
+        UserEntity user = userService.getCurrentUser();
+
+        ProductEntity updatedProduct = ProductEntity.builder()
+                .id(product.getId())
+                .productName(productDto.getProductName())
+                .author(productDto.getAuthor())
+                .category(productDto.getCategory())
+                .price(productDto.getPrice())
+                .stock(productDto.getStock())
+                .status(productDto.getProductStatus())
+                .description(productDto.getDescription())
+                .productDetails(productDto.getProductDetails())
+                .productImage(imageUrl != null && !imageUrl.isEmpty() ? imageUrl : product.getProductImage())
+                .user(user)
+                .build();
+
+        productRepository.save(updatedProduct);
     }
 }

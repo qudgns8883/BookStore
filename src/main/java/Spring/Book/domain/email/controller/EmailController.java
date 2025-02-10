@@ -22,14 +22,12 @@ public class EmailController {
     @PostMapping("/email/sendVerificationCode")
     public ResponseEntity<String> sendVerificationCode(@RequestParam String username) {
         try {
-            // 인증번호 생성 및 이메일 전송
             emailService.sendVerificationCode(username);
 
             return ResponseEntity.ok("인증번호가 전송되었습니다. 이메일을 확인해주세요.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("유효하지 않은 이메일 주소입니다.");
         } catch (Exception e) {
-            // 기타 예외 처리
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("서버에서 오류가 발생했습니다. 다시 시도해주세요.");

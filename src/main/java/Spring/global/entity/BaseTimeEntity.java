@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 public class BaseTimeEntity {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
     @CreatedDate

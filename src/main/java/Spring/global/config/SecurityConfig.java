@@ -21,7 +21,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/home","/myPage/**", "/order/**","/payment/**","/product/**","/uploads/**","/login","/loginProc", "/user/**" , "/css/**", "/js/**", "/images/**", "/email/**").permitAll()
+                        .requestMatchers("/home","/myPage/**", "/order/**","/payment/**","/product/**","/uploads/**","/login","/loginProc", "/user/**" , "/css/**", "/js/**", "/images/**", "/email/**", "/review/**").permitAll()
                         .requestMatchers("/admin/**" ).hasRole("ADMIN")
                         .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
@@ -30,7 +30,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/loginProc")
                         .failureHandler(customFailureHandler)
                         .successHandler((request, response, authentication) -> {
-                            response.sendRedirect("/home"); // 로그인 성공 후 "/home" 페이지로 리디렉션
+                            response.sendRedirect("/home");
                         })
                         .permitAll()
                 )

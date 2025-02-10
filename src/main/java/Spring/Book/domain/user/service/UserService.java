@@ -1,8 +1,10 @@
 package Spring.Book.domain.user.service;
 
+import Spring.Book.domain.user.dto.Address;
 import Spring.Book.domain.user.dto.FindEmailDto;
 import Spring.Book.domain.user.dto.UserDto;
 import Spring.Book.domain.user.entity.Role;
+import Spring.Book.domain.user.entity.Status;
 import Spring.Book.domain.user.entity.UserEntity;
 import Spring.Book.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,7 @@ public class UserService {
                 .birthdate(userDto.getBirthdate())
                 .mileage(userDto.getMileage())
                 .role(Role.ADMIN)
+                .status(Status.ACTIVE)
                 .address(userDto.getAddress())
                 .build();
 
@@ -82,9 +85,9 @@ public class UserService {
                 .nickname(userEntity.getNickname())
                 .username(userEntity.getUsername())
                 .mileage(userEntity.getMileage())
+                .birthdate(userEntity.getBirthdate())
                 .address(userEntity.getAddress())
                 .build();
-
     }
 }
 

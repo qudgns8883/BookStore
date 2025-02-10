@@ -17,12 +17,12 @@ public class PaymentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // 기본 키
-    private String orderId; // 주문 고유 ID
-    private int amount; // 결제 금액
-    private String recipientName; // 받는 사람 이름
-    private String shippingAddress; // 배송 주소
-    private String deliveryInstructions; // 배송 요청 사항
+    private Long id;
+    private String orderId;
+    private int amount;
+    private String recipientName;
+    private String shippingAddress;
+    private String deliveryInstructions;
     private int mileageUsed;
 
     @ManyToOne(fetch = FetchType.LAZY)

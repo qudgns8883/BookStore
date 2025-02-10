@@ -36,7 +36,7 @@ public class OrderService {
 
     public List<OrderDto> getOrders() {
         UserEntity user = userService.getCurrentUser();
-        List<OrderEntity> orderItems = orderRepository.findOrdersWithPaymentsAndProductsByUser(user);
+        List<OrderEntity> orderItems = orderRepository.findOrdersByUser(user.getId());
 
         return orderItems.stream()
                 .map(orderItem -> OrderDto.from(orderItem, orderItem.getPayment()))

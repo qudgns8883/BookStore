@@ -1,6 +1,8 @@
 package Spring.Book.domain.admin.product.entity;
 
 
+import Spring.Book.domain.cart.entity.CartEntity;
+import Spring.Book.domain.review.entity.ReviewEntity;
 import Spring.Book.domain.user.entity.UserEntity;
 import Spring.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -8,6 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +25,6 @@ public class ProductEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(nullable = false)
     private String productName;
     private String author;
     @Column(length = 4000)
@@ -34,15 +38,17 @@ public class ProductEntity extends BaseTimeEntity {
     @Column(length = 2000)
     private String productDetails;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private ProductStatus status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ReviewEntity> reviews = new ArrayList<>();
 
-    @Builder(toBuilder = true)
+    @Builder
     public ProductEntity(Long id, String productName, String author, String description, String category, int price, int stock,
-                         String productImage, String productDetails,ProductStatus status, UserEntity user) {
+                         String productImage, String productDetails,ProductStatus status, UserEntity user, List<ReviewEntity> reviews) {
         this.id = id;
         this.productName = productName;
         this.author = author;
@@ -54,13 +60,14 @@ public class ProductEntity extends BaseTimeEntity {
         this.productDetails = productDetails;
         this.status = status;
         this.user = user;
+        this.reviews = reviews;
     }
 
-    // 재고 감소 메소드
+
     public void decreaseStock(int quantity) {
         if (this.stock < quantity) {
             throw new IllegalArgumentException("재고가 부족합니다.");
         }
-        this.stock -= quantity; // 재고 차감
+        this.stock -= quantity;
     }
 }

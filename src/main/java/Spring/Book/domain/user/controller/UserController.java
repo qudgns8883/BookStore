@@ -65,6 +65,6 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("가입한 아이디가 없습니다.");
         }
-
     }
+
 }

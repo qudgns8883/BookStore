@@ -23,6 +23,6 @@ public class OrderController {
         List<OrderDto> order = orderService.getOrder(orderId);
 
         model.addAttribute("order", order);
-        return "payment/paymentSuccess"; // View 파일 이름
+        return "payment/paymentSuccess"; 
     }
 }

@@ -15,12 +15,12 @@ import java.util.List;
 @Builder
 public class PaymentRequest {
 
-    private String orderId; // 주문 고유 ID
-    private int amount; // 결제 금액
-    private String recipientName; // 받는 사람 이름
-    private String shippingAddress; // 배송 주소
-    private String deliveryInstructions; // 배송 요청 사항
-    private List<CartDto> cartDto = new ArrayList<>(); // 상품 ID와 수량을 포함하는 리스트
+    private String orderId;
+    private int amount;
+    private String recipientName;
+    private String shippingAddress;
+    private String deliveryInstructions;
+    private List<CartDto> cartDto = new ArrayList<>();
     private int mileageUsed;
     private int earnedMileage;
 
@@ -35,7 +35,6 @@ public class PaymentRequest {
         this.earnedMileage = earnedMileage;
     }
 
-    // PaymentEntity 변환 메서드
     public PaymentEntity toPaymentEntity() {
         return PaymentEntity.builder()
                 .orderId(this.orderId)

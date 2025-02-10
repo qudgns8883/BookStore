@@ -89,23 +89,21 @@
 
     <div class="search-box">
         <form>
-            <!-- 첫 번째 줄: 회원 상태 -->
             <div class="form-group mb-3">
                 <label class="mr-2">회원 상태:</label>
                 <label for="activeMember" class="mr-3">
-                    <input type="radio" id="activeMember" name="memberStatus" value="active" checked>
+                    <input type="radio" id="activeMember" name="memberStatus" value="ACTIVE" checked>
                     활동회원
                 </label>
                 <label for="inactiveMember">
-                    <input type="radio" id="inactiveMember" name="memberStatus" value="inactive">
+                    <input type="radio" id="inactiveMember" name="memberStatus" value="INACTIVE">
                     탈퇴회원
                 </label>
             </div>
-            <!-- 두 번째 줄: 회원 ID -->
             <div class="form-group">
                 <label for="searchBy" class="mr-2">검색 기준:</label>
                 <select id="searchBy" class="form-control w-auto d-inline-block mr-3">
-                    <option value="id">회원 ID</option>
+                    <option value="username">이메일</option>
                     <option value="nickname">닉네임</option>
                 </select>
 
@@ -139,6 +137,32 @@
             </tbody>
         </table>
     </div>
+    <script>
+        document.querySelector("button[type='button']").addEventListener("click", function() {
+            const memberStatus = document.querySelector('input[name="memberStatus"]:checked').value;
+            const searchBy = document.querySelector('#searchBy').value;
+            const searchQuery = document.querySelector('#memberId').value;
+
+            fetch(`/admin/searchMembers?status=${memberStatus}&searchBy=${searchBy}&query=${searchQuery}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector("table tbody");
+                    tbody.innerHTML = "";
+                    data.forEach(user => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.nickname}</td>
+                            <td>${user.username}</td>
+                            <td>${user.birthdate}</td>
+                            <td>${user.createDate}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+    </script>
 </div>
 </body>
 </html>

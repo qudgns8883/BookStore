@@ -11,32 +11,20 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.HashMap;
-import java.util.Map;
-
-// 원래는 예외가 발생하면 was까지 예외가 던져지고 was에서 오류페이지 정보를 찾아서 에러를 호출하지만
-// 스프링의 커스텀 예외를 활용하면 예외가 발생한 지점에서 직접적으로 http상태코드와 메세지를 반환할 수 잇다.
 @Slf4j
-@RestControllerAdvice//대상을 지정 안하면 글로벌예외처리, (annotations = 컨트롤.class) , ("패키지")
+@RestControllerAdvice
 public class ExControllerAdvice {
 
-    // IllegalArgumentException이 발생했을 때 호출
-    // @ResponseStatus를 사용해 HTTP 상태 코드를 400 (Bad Request)로 설정
-    //@ResponseStatus(HttpStatus.BAD_REQUEST) 안해주면 예외처리가 정상적으로 되어서 200으로 나감
-    // 예외 메시지를 담은 ErrorResult 객체를 반환
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class) //(IllegalArgumentException.class)생략가능
+    @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResult illegalExHandle(IllegalArgumentException e) {
         log.error("[exceptionHandle] ex", e);
         return new ErrorResult("BAD", e.getMessage());
     }
 
-    // UserException이 발생했을 때 호출
-    // @ResponseEntity를 사용해 HTTP 상태 코드와 함께 ErrrResult 객체를 반환한다.
     @ExceptionHandler
     public ResponseEntity<ErrorResult> userExHandle(BadRequestException e) {
-        log.error("[exceptionHandle] ex", e); // 예외 로그를 남긴다.
+        log.error("[exceptionHandle] ex", e);
         ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
@@ -50,27 +38,26 @@ public class ExControllerAdvice {
     }
 
     @ExceptionHandler
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                errors.put(error.getField(), error.getDefaultMessage()));
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
-    @ExceptionHandler
     public ResponseEntity<ErrorResult> handleDataIntegrityViolation(DataIntegrityViolationException e) {
         log.error("[exceptionHandle] ex", e);
         ErrorResult errorResult = new ErrorResult("DUPLICATE_EMAIL-EX", e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 
-    // 이 메서드는 모든 Exception 예외를 처리한다.
-    // @ResponseStatus를 사용해 HTTP 상태 코드를 500 (Internal Server Error)로 설정하고,
-    // 에러 메시지를 담은 ErrorResult 객체를 반환한다.
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public ErrorResult exHandle(Exception e) {
         log.error("[exceptionHandle] ex", e);
         return new ErrorResult("EX", "내부 오류");
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        StringBuilder errorMessage = new StringBuilder("유효성 검사 실패: ");
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errorMessage.append(error.getDefaultMessage()).append(" ")
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
     }
 }
 

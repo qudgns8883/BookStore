@@ -123,21 +123,14 @@
         document.getElementById("findUsername").onclick = function() {
         const nickname = document.getElementById('nickname').value;
         const birthdate = document.getElementById('birthdate').value;
-        const errorElement = document.getElementById('element'); // 오류 메시지 표시용
-
-        console.log(nickname);
-        console.log(birthdate);
-
-        // 오류 메시지 초기화
+        const errorElement = document.getElementById('element');
         errorElement.textContent = "";
 
-        // 입력값 확인
         if (!nickname || !birthdate) {
             errorElement.textContent = "모든 필드를 입력해주세요.";
             return;
         }
 
-        // 아이디찾기
         fetch('/user/findUsername', {
             method: 'POST',
             headers: {
@@ -146,7 +139,6 @@
             body: JSON.stringify({ nickname: nickname, birthdate: birthdate }),
         })
         .then(response => {
-         console.log(response);
             if (!response.ok) {
                 return response.text().then(errorMessage => {
                     errorElement.textContent = errorMessage;
@@ -160,19 +152,16 @@
         })
     }
 
-
-        // 모달 열기
         document.getElementById("findUsernameBtn").onclick = function(event) {
-            event.preventDefault(); // 기본 링크 동작 방지
+            event.preventDefault();
             document.getElementById("findUsernameModal").style.display = "block";
         }
 
         document.getElementById("findPasswordBtn").onclick = function(event) {
-            event.preventDefault(); // 기본 링크 동작 방지
+            event.preventDefault();
             document.getElementById("findPasswordModal").style.display = "block";
         }
 
-        // 모달 닫기
         document.getElementById("closeFindUsername").onclick = function() {
             document.getElementById("findUsernameModal").style.display = "none";
         }
@@ -181,7 +170,6 @@
             document.getElementById("findPasswordModal").style.display = "none";
         }
 
-        // 모달 외부 클릭 시 닫기
         window.onclick = function(event) {
             if (event.target === document.getElementById("findUsernameModal")) {
                 document.getElementById("findUsernameModal").style.display = "none";

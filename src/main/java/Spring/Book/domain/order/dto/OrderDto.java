@@ -38,7 +38,6 @@ public class OrderDto {
         this.createDate = createDate;
     }
 
-    // OrderDto 변환 메서드
     public static OrderDto from(OrderEntity orderItem, PaymentEntity payment) {
         ProductDto productDto = fromProductEntity(orderItem.getProduct());
 

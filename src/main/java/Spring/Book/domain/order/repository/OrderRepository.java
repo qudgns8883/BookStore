@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     List<OrderEntity> findByPayment(PaymentEntity payment);
-    @Query("SELECT o FROM OrderEntity o JOIN FETCH o.payment JOIN FETCH o.product WHERE o.user = :user")
-    List<OrderEntity> findOrdersWithPaymentsAndProductsByUser(@Param("user") UserEntity user);
+    @Query("SELECT o FROM OrderEntity o JOIN FETCH o.payment JOIN FETCH o.product WHERE o.user.id = :userId")
+    List<OrderEntity> findOrdersByUser(@Param("userId") Long userId);
+    boolean existsByUserIdAndProductId(Long userId, Long productId);
 }

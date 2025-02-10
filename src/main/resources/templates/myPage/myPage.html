@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/fragments/layout/default}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout/default}">
 <head>
     <meta charset="UTF-8">
     <title>마이페이지</title>
@@ -94,64 +95,90 @@
     </style>
 </head>
 <body>
-    <div layout:fragment="content">
-        <h1 style="text-align: center;">마이페이지</h1>
-        <div class="tab-menu">
-            <button class="tab-link" data-target="purchase-history">구매내역</button>
-            <button class="tab-link" data-target="profile-edit">정보수정</button>
-            <button class="tab-link" data-target="review-history">리뷰내역</button>
-        </div>
+<div layout:fragment="content">
+    <h1 style="text-align: center;">마이페이지</h1>
+    <div class="tab-menu">
+        <button class="tab-link" data-target="purchase-history">구매내역</button>
+        <button class="tab-link" data-target="profile-edit">정보수정</button>
+        <button class="tab-link" data-target="review-history">리뷰내역</button>
+    </div>
 
-            <div class="content1" id="purchase-history">
-                <h2>구매내역</h2>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>상품정보</th>
-                        <th>주문일자</th>
-                        <th>총 주문가격</th>
-                        <th>총 수량</th>
-                        <th>주문상세</th>
-                    </tr>
-                    </thead>
-                    <tbody id="purchase-data">
-                    <!-- 구매내역 데이터가 여기에 동적으로 추가됩니다. -->
-                    </tbody>
-                </table>
+    <div class="content1" id="purchase-history">
+        <h2>구매내역</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>상품정보</th>
+                <th>주문일자</th>
+                <th>총 주문가격</th>
+                <th>총 수량</th>
+                <th>주문상세</th>
+            </tr>
+            </thead>
+            <tbody id="purchase-data">
+            <!-- 구매내역 데이터가 여기에 동적으로 추가됩니다. -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content1 hidden" id="profile-edit">
+        <h2>정보수정</h2>
+        <form id="profile-edit-form">
+            <input type="hidden" id="userId" name="userId">
+            <div>
+                <label for="nickname">닉네임:</label>
+                <input type="text" id="nickname" name="nickname" required>
+            </div>
+            <div>
+                <label for="username">이메일:</label>
+                <input type="email" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="birthdate">생일:</label>
+                <input type="date" id="birthdate" name="birthdate">
             </div>
 
-        <div class="content1 hidden" id="profile-edit">
-            <h2>정보수정</h2>
-            <p>여기에 사용자의 프로필 수정 폼을 표시합니다.</p>
-            <!-- 정보 수정 내용을 여기에 추가 -->
+            <label for="sample6_postcode">우편번호</label>
+            <input type="text" id="sample6_postcode" class="form-control"
+                   placeholder="우편번호">
+            <input type="button" class="btn mt-2" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+
+            <label for="sample6_address">주소</label>
+            <input type="text" id="sample6_address" class="form-control"
+                   placeholder="주소"><br>
+
+            <label for="sample6_detailAddress">상세주소</label>
+            <input type="text" id="sample6_detailAddress" class="form-control"
+                   placeholder="상세주소">
+
+            <label for="sample6_extraAddress">참고항목</label>
+            <input type="text" id="sample6_extraAddress" class="form-control"
+                   placeholder="참고항목">
+            <button type="submit">수정하기</button>
+        </form>
+    </div>
+
+    <div class="content1 hidden" id="review-history">
+        <h2>리뷰내역</h2>
+        <p>여기에 사용자가 작성한 리뷰를 표시합니다.</p>
+        <!-- 리뷰 내역 내용을 여기에 추가 -->
+    </div>
+
+    <div id="modal" style="display:none;">
+        <div id="modal-content">
+            <!-- 모달 내용이 여기에 삽입됩니다. -->
         </div>
+    </div>
 
-        <div class="content1 hidden" id="review-history">
-            <h2>리뷰내역</h2>
-            <p>여기에 사용자가 작성한 리뷰를 표시합니다.</p>
-            <!-- 리뷰 내역 내용을 여기에 추가 -->
-        </div>
-
-        <div id="modal" style="display:none;">
-            <div id="modal-content">
-                <!-- 모달 내용이 여기에 삽입됩니다. -->
-            </div>
-        </div>
-
-
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // 탭 클릭 이벤트 리스너 추가
             document.querySelectorAll('.tab-link').forEach(tab => {
                 tab.addEventListener('click', function () {
-                    // 모든 탭에서 active 클래스 제거
                     document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active'));
                     this.classList.add('active');
-
-                    // 모든 컨텐츠 숨기기
                     document.querySelectorAll('.content1').forEach(content => content.classList.add('hidden'));
 
-                    // 클릭한 탭의 타겟 컨텐츠 표시
                     const target = this.getAttribute('data-target');
                     const targetElement = document.getElementById(target);
 
@@ -161,18 +188,86 @@
                         if (target === 'purchase-history') {
                         loadPurchaseHistory();
                         }
+
+                         if (target === 'review-history') {
+                        ReviewHistory();
+                        }
+
+                        if (target === 'profile-edit') {
+                        loadUserProfile();
+                        }
                     } else {
                         console.error("Target element not found for:", target);
                     }
                 });
             });
 
-            // 초기 상태에서 구매 내역 표시
             document.getElementById('purchase-history').classList.remove('hidden');
+            loadPurchaseHistory();
         });
 
-       function loadPurchaseHistory() {
-            fetch('/myPage/getOrder')  // 서버 API URL
+        function loadUserProfile() {
+            fetch('/myPage/user/getUserInfo')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('사용자 정보를 가져오는 데 실패했습니다.');
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    document.getElementById('userId').value = user.id;
+                    document.getElementById('nickname').value = user.nickname;
+                    document.getElementById('username').value = user.username;
+                    document.getElementById('birthdate').value = user.birthdate;
+                    document.getElementById('sample6_postcode').value = user.address.zipcode; // 우편번호
+                    document.getElementById('sample6_address').value = user.address.address; // 주소
+                    document.getElementById('sample6_detailAddress').value = user.address.detailAddr; // 상세주소
+                    document.getElementById('sample6_extraAddress').value = user.address.subAddr; // 참고항목
+                    document.getElementById('profile-edit-form').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error fetching user data:', error);
+                    alert('사용자 정보를 가져오는 중 오류가 발생했습니다.');
+                });
+        }
+        // 수정 폼 제출 이벤트
+        document.getElementById('profile-edit-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const userData = {
+                id: document.getElementById('userId').value,
+                nickname: document.getElementById('nickname').value,
+                username: document.getElementById('username').value,
+                birthdate: document.getElementById('birthdate').value,
+                address: {
+                    zipcode: document.getElementById('sample6_postcode').value,
+                    address: document.getElementById('sample6_address').value,
+                    detailAddr: document.getElementById('sample6_detailAddress').value,
+                    subAddr: document.getElementById('sample6_extraAddress').value
+                }
+            };
+
+            fetch('/myPage/user/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('사용자 정보 수정에 실패했습니다.');
+                }
+                alert('사용자 정보가 성공적으로 수정되었습니다.');
+            })
+            .catch(error => {
+                console.error('Error updating user data:', error);
+                alert('사용자 정보 수정 중 오류가 발생했습니다.');
+            });
+        });
+
+        function loadPurchaseHistory() {
+            fetch('/myPage/getOrder')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -181,40 +276,34 @@
                 })
                 .then(data => {
                     const purchaseDataContainer = document.getElementById('purchase-data');
-                    purchaseDataContainer.innerHTML = ''; // 기존 데이터 초기화
-                    console.log(data);
-
-                    // 주문을 paymentId로 그룹화
+                    purchaseDataContainer.innerHTML = '';
                     const groupedOrders = {};
 
                     data.forEach(item => {
                         const paymentId = item.paymentId;
 
-                        // paymentId로 그룹화
                         if (!groupedOrders[paymentId]) {
                             groupedOrders[paymentId] = [];
                         }
                         groupedOrders[paymentId].push(item);
                     });
 
-                    // 그룹화된 주문을 테이블에 표시
                     for (const paymentId in groupedOrders) {
                         const orders = groupedOrders[paymentId];
                         const orderCount = orders.length;
 
-                        const row = document.createElement('tr'); // 새로운 행 생성
+                        const row = document.createElement('tr');
 
-                        // 첫 번째 주문의 정보 표시
                         const firstOrder = orders[0];
 
-                        let totalQuantity = 0; // 총 수량
+                        let totalQuantity = 0;
 
                         orders.forEach(order => {
-                            totalQuantity += order.quantity; // 수량 합산
+                            totalQuantity += order.quantity;
                         });
 
                         row.innerHTML = `
-                             <td>
+                            <td>
                                 <img src="/uploads/${firstOrder.product.productImage}" alt="${firstOrder.product.productName}" class="product-image" />
                                 ${firstOrder.product.productName}${orderCount > 1 ? ` 외 ${orderCount - 1}개` : ''}
                             </td>
@@ -223,14 +312,14 @@
                             <td>${orderCount}종 ${totalQuantity}권</td>
                             <td><button class="detail-button" data-item='${JSON.stringify(orders)}'>상세보기</button></td>
                         `;
-                        purchaseDataContainer.appendChild(row); // 행을 테이블에 추가
+                        purchaseDataContainer.appendChild(row);
                     }
 
                     // 상세보기 버튼 클릭 이벤트 리스너 추가
                     document.querySelectorAll('.detail-button').forEach(button => {
                         button.addEventListener('click', function() {
-                            const itemData = JSON.parse(this.getAttribute('data-item')); // JSON 문자열을 객체로 변환
-                            openModal(itemData); // 모달 열기
+                            const itemData = JSON.parse(this.getAttribute('data-item'));
+                            openModal(itemData);
                         });
                     });
                 })
@@ -239,19 +328,94 @@
                 });
         }
 
+        function ReviewHistory() {
+            fetch('/review/getReviews')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayReviewHistory(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching review history:', error);
+                    alert('리뷰 내역을 가져오는 중 오류가 발생했습니다.');
+                });
+            }
+
+        function displayReviewHistory(reviews) {
+            const reviewDataContainer = document.getElementById('review-history');
+            reviewDataContainer.innerHTML = '';
+
+            if (reviews.length === 0) {
+                reviewDataContainer.innerHTML = '<p>작성한 리뷰가 없습니다.</p>';
+                return;
+            }
+
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>상품명</th>
+                        <th>리뷰 내용</th>
+                        <th>평점</th>
+                        <th>작성일</th>
+                        <th>삭제</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${reviews.map(review => `
+                        <tr>
+                            <td>${review.productName}</td>
+                            <td>${review.review}</td>
+                            <td>${review.rating}</td>
+                            <td>${review.createDate}</td>
+                            <td><button onclick="deleteReview(${review.id})">삭제</button></td> <!-- 삭제 버튼 추가 -->
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+
+            reviewDataContainer.appendChild(table);
+        }
+
+        function deleteReview(reviewId) {
+            if (confirm('이 리뷰를 삭제하시겠습니까?')) {
+                fetch(`/review/delete/${reviewId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('리뷰 삭제 실패');
+                    }
+
+                    // 응답이 204 No Content인 경우
+                    if (response.status === 204) {
+                        alert('리뷰가 성공적으로 삭제되었습니다.');
+                        // 리뷰 목록을 새로고침하는 함수 호출
+                        ReviewHistory(); // 리뷰 목록을 새로고침하는 함수
+                        return;
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error('Error deleting review:', error);
+                    alert('리뷰 삭제 중 오류가 발생했습니다.');
+                });
+            }
+        }
+
         function openModal(orders) {
             const modalContent = document.getElementById('modal-content');
 
-            // 모달 내용 초기화
             modalContent.innerHTML = '<h2>주문 상세보기</h2>' +
                             '<hr style="border: 1px solid #ccc; margin: 20px 0;">';
-
-            // 첫 번째 주문의 정보를 가져옵니다.
             const firstOrder = orders[0];
 
             const paymentId = firstOrder.paymentId.replace('order_', '');
 
-            // 주문 날짜, 배송 주소, 배송 요청 사항, 총 금액, 사용된 마일리지는 한 번만 표시
             modalContent.innerHTML += `
                 <p><strong>주문 날짜:</strong> ${firstOrder.createDate}</p>
                 <p><strong>배송 주소:</strong> ${firstOrder.address}</p>
@@ -260,7 +424,6 @@
                 <h3>상품 정보</h3>
             `;
 
-            // 각 주문의 상품 정보를 반복하여 추가
             orders.forEach((order, index) => {
                 const product = order.product || {}; // 안전하게 접근
                 const productName = product.productName || '상품 정보 없음'; // 기본값 설정
@@ -279,7 +442,6 @@
                 `;
             });
 
-            // 결제 정보 추가
             modalContent.innerHTML += `
                 <br>
                 <h3>결제 정보</h3>
@@ -294,6 +456,41 @@
         }
         function closeModal() {
             document.getElementById('modal').style.display = 'none'; // 모달 닫기
+        }
+
+        // sample6_execDaumPostcode 함수 정의
+        function sample6_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var addr = '';
+                    var extraAddr = '';
+
+                    if (data.userSelectedType === 'R') {
+                        addr = data.roadAddress;
+                    } else {
+                        addr = data.jibunAddress;
+                    }
+
+                    if(data.userSelectedType === 'R'){
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
+                        }
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        document.getElementById("sample6_extraAddress").value = extraAddr;
+                    } else {
+                        document.getElementById("sample6_extraAddress").value = '';
+                    }
+
+                    document.getElementById('sample6_postcode').value = data.zonecode;
+                    document.getElementById("sample6_address").value = addr;
+                    document.getElementById("sample6_detailAddress").focus();
+                }
+            }).open();
         }
     </script>
 </div>

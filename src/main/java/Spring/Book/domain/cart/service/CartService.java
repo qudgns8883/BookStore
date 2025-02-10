@@ -63,9 +63,6 @@ public class CartService {
                 .count();
     }
 
-    /**
-     * 현재 사용자의 장바구니 항목 가져오기
-     */
     public List<CartDto> getCartItems() {
         UserEntity user = userService.getCurrentUser();
         if (user == null) {

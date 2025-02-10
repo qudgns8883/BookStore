@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.UUID;
 
-// HTTP 요청에 고유한 요청 ID를 생성하여 요청 속성에 저장하는 필터
 @Component
 public class RequestIdFilter extends OncePerRequestFilter {
 

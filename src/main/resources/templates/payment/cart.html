@@ -222,7 +222,7 @@
 
         // 페이지 로드 시 초기 가격 계산
         document.addEventListener('DOMContentLoaded', function () {
-            const cartItemCountText = document.getElementById('cartItemCount').textContent; // '총 1 건'
+            const cartItemCountText = document.getElementById('cartItemCount').textContent;
             cartItemCount = parseInt(cartItemCountText.replace(/[^\d]/g, '')) || 0;
 
             updatePriceAndPoints();
@@ -249,8 +249,8 @@
         }
         // 가격 및 포인트 업데이트 함수
     function updatePriceAndPoints() {
-        let totalQuantity = 0;  // 총 상품 수
-        let totalPrice = 0;  // 총 상품 가격
+        let totalQuantity = 0;
+        let totalPrice = 0;
 
         // 각 상품의 가격 * 수량을 합산
         document.querySelectorAll('.quantity-input').forEach(function (quantityInput) {
@@ -334,7 +334,7 @@
                     if (response.ok) {
                         // 성공적으로 삭제된 경우
                         alert("상품이 삭제되었습니다.");
-                        location.reload(); // 페이지 새로 고침하여 업데이트
+                        location.reload();
                     } else {
                         // 삭제 실패 시
                         alert("상품 삭제에 실패하였습니다.");
@@ -356,7 +356,7 @@
 
         // GET 요청으로 결제 페이지로 이동
         const url = `/payment?totalQuantity=${totalQuantity}&totalPrice=${totalPrice}&mileageUsed=${mileageUsed}&totalAmount=${totalAmount}`;
-        window.location.href = url; // 결제 페이지로 리다이렉트
+        window.location.href = url;
     }
     </script>
 </div>

@@ -29,8 +29,7 @@ public class AdminProductController {
     public String registerProduct(@ModelAttribute ProductDto productDto, BindingResult result,
                                   @RequestParam("productImageUrl") MultipartFile file) {
         if (result.hasErrors()) {
-            // 에러 처리 로직
-            return "user/signup"; // 에러가 있는 경우 다시 폼으로 돌아가기
+            return "user/signup";
         }
 
         String imageUrl = adminProductService.storeFile(file);
@@ -41,8 +40,8 @@ public class AdminProductController {
     @GetMapping("/BtnStatus")
     @ResponseBody
     public ResponseEntity<List<ProductDto>> getProductsByStatusAndCategory(
-            @RequestParam String status,
-            @RequestParam String category,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String category,
             @RequestParam(required = false, defaultValue = "") String query) {
         List<ProductDto> products = adminProductService.getProductsByStatusAndCategory(status, category, query);
         return ResponseEntity.ok(products);
@@ -59,7 +58,7 @@ public class AdminProductController {
         List<ProductDto> productList = adminProductService.getAllProducts();
 
         int totalProduct = productList.size();
-        ProductStatusCount statusCount = adminProductService.countProductStatus(); // 상태별 개수 가져오기
+        ProductStatusCount statusCount = adminProductService.countProductStatus();
 
         model.addAttribute("totalProduct", totalProduct);
         model.addAttribute("activeProduct", statusCount.getOnSaleCount());
@@ -73,20 +72,42 @@ public class AdminProductController {
     @PostMapping("/imageUpload")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> uploadImage(@RequestParam("upload") MultipartFile file) {
-        try {
+
             String imageUrl = adminProductService.storeFile(file);
             String url = "/uploads/" + imageUrl;
 
             Map<String, Object> response = new HashMap<>();
             response.put("uploaded", true);
-            response.put("url", url); // 반환할 URL
+            response.put("url", url);
 
             return ResponseEntity.ok(response);
+    }
 
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", e.getMessage()));
+    @GetMapping("/product/edit/{id}")
+    public String editProduct(@PathVariable Long id, Model model) {
+        ProductDto productDto = adminProductService.getProductById(id);
+        model.addAttribute("product", productDto);
+        return "/admin/productEdit";
+    }
+
+    @PostMapping("/product/update/{id}")
+    public String updateProduct(@PathVariable Long id,
+                                @ModelAttribute ProductDto productDto,
+                                BindingResult result,
+                                @RequestParam(value = "productImageUrl", required = false) MultipartFile file,
+                                @RequestParam("existingImageUrl") String existingImageUrl) {
+        if (result.hasErrors()) {
+            return "/admin/productEdit";
         }
+
+        String imageUrl = existingImageUrl;
+
+        if (file != null && !file.isEmpty()) {
+            imageUrl = adminProductService.storeFile(file);
+        }
+
+        adminProductService.updateProduct(id, productDto, imageUrl);
+        return "redirect:/admin/product";
     }
 }
 

@@ -267,26 +267,21 @@
         const cartItems = /*[[${cartItems}]]*/ [];
     </script>
     <script>
-        console.log(cartItems);
-        console.log('Cart Items:', JSON.stringify(cartItems));
         function submitPayment() {
-            // 배송 정보 수집
             const recipientName = document.getElementById('recipientName').value;
             const zipcode = document.getElementById('zipcode').value;
             const shippingAddress = document.getElementById('shippingAddress').value;
             const detailAddr = document.getElementById('detailAddr').value;
             const deliveryInstructions = document.getElementById('deliveryInstructions').value;
 
-            // 총 결제 금액 수집
             const totalAmount = document.getElementById('totalAmount').innerText.replace(' 원', '').replace(/,/g, '');
             const mileageUsed = document.getElementById('mileageUsed').innerText.replace(' 원', '').replace(/,/g, '');
             const totalPrice = document.getElementById('totalPrice').innerText.replace(' 원', '').replace(/,/g, '');
 
             const earnedMileage = Math.floor(totalPrice * 0.05);
 
-            // cartItems가 비어 있는지 체크
             if (cartItems.length === 0) {
-                alert("장바구니에 상품이 없습니다."); // 경고 메시지
+                alert("장바구니에 상품이 없습니다.");
                 return;
             }
 
@@ -321,7 +316,6 @@
                             earnedMileage: earnedMileage
                         }),
                         success: function (data) {
-                            console.log('결제 정보가 성공적으로 저장되었습니다:', data);
                             window.location.href = `/order/success?orderId=${response.merchant_uid}`;                        },
                         error: function (error) {
                             console.error('결제 정보를 저장하는 데 실패하였습니다:', error);

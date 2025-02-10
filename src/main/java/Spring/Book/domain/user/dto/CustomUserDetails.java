@@ -16,7 +16,6 @@ public class CustomUserDetails implements UserDetails {
 
     private final UserEntity userEntity;
 
-    //사용자 권한
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
@@ -58,6 +57,6 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public Long getId() {
-        return userEntity.getId();  // 유저 아이디 추가
+        return userEntity.getId();
     }
 }
