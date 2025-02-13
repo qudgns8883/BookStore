@@ -1,5 +1,6 @@
 package Spring.Book.domain.user.service;
 
+import Spring.Book.domain.event.UserRegisteredEvent;
 import Spring.Book.domain.user.dto.Address;
 import Spring.Book.domain.user.dto.FindEmailDto;
 import Spring.Book.domain.user.dto.UserDto;
@@ -8,6 +9,7 @@ import Spring.Book.domain.user.entity.Status;
 import Spring.Book.domain.user.entity.UserEntity;
 import Spring.Book.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +25,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
     public void register(UserDto userDto){
 
@@ -46,6 +49,10 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+
+        String message = user.getNickname() + "님, 가입을 축하드립니다! 3,000원 마일리지가 지급되었습니다.";
+        eventPublisher.publishEvent(new UserRegisteredEvent(this, message, user.getId()));
+
     }
 
     public boolean isNicknameTaken(String nickname) {

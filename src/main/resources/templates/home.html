@@ -54,19 +54,39 @@
             font-weight: bold;
             margin-bottom: 15px;
         }
+
+        .out-of-stock-price {
+            text-decoration: line-through;
+            color: red;
+        }
+
+        /* 품절 텍스트 스타일 */
+        .out-of-stock-label {
+            color: red;
+            font-weight: bold;
+            margin-left: 10px;
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
 <div layout:fragment="content">
     <h1>상품 리스트</h1>
     <div class="product-list">
-        <div th:each="product : ${productList}" class="product-item">
+        <div th:each="product : ${productList}" class="product-item"
+             th:if="${product.productStatus != T(Spring.Book.domain.admin.product.entity.ProductStatus).판매중지}">
             <a th:href="@{'/product/' + ${product.id}}" class="product-link">
                 <img th:src="@{'/uploads/' + ${product.productImage}}"
                      th:alt="${product.productName}" class="product-image" />
             </a>
             <h2 class="product-name" th:text="${product.productName}"></h2>
-            <p class="product-price" th:text="${product.price} + ' 원'"></p>
+            <p class="product-price">
+                <!-- 가격과 품절 상태 처리 -->
+                <span th:text="${product.productStatus == T(Spring.Book.domain.admin.product.entity.ProductStatus).품절 ? product.price + ' 원' : product.price + ' 원'}"
+                      th:classappend="${product.productStatus == T(Spring.Book.domain.admin.product.entity.ProductStatus).품절 ? ' out-of-stock-price' : ''}"></span>
+
+                <span th:if="${product.productStatus == T(Spring.Book.domain.admin.product.entity.ProductStatus).품절}" class="out-of-stock-label">품절</span>
+            </p>
         </div>
     </div>
 </div>

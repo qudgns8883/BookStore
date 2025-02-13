@@ -4,58 +4,136 @@
       layout:decorate="~{/fragments/layout/default}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
     <style>
-
         .login-container {
-            max-width: 500px; /* 최대 너비 조정 (원하는 너비로 설정) */
-            margin: auto; /* 중앙 정렬 */
-            background-color: #fff; /* 카드 배경색 */
-            border-radius: 8px; /* 모서리 둥글게 */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-        }
+             width: 100%;
+             max-width: 400px;
+             margin: 20px auto;
+             background-color: #fff;
+             padding: 30px;
+             border-radius: 10px;
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+             text-align: center;
+         }
 
-        h1 {
-            text-align: center; /* 제목 가운데 정렬 */
-            margin-bottom: 20px; /* 제목 아래 여백 */
-        }
+         h1 {
+             font-size: 24px;
+             margin-bottom: 20px;
+             font-weight: bold;
+             color: #333;
+         }
 
-        .error {
-            color: red;
-            font-size: 12px;
-        }
-        /* 모달 스타일 */
-        .modal {
-            display: none; /* 기본적으로 숨김 */
-            position: fixed; /* 고정 위치 */
-            z-index: 1; /* 최상위 */
-            left: 0;
-            top: 0;
-            width: 100%; /* 전체 화면 */
-            height: 100%; /* 전체 화면 */
-            overflow: auto; /* 스크롤 가능 */
-            background-color: rgba(0, 0, 0, 0.4); /* 어두운 배경 */
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; /* 중앙 정렬 */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 300px; /* 모달 너비 */
-            border-radius: 8px; /* 모서리 둥글게 */
-        }
-        .close {
-            color: #aaa; /* 닫기 버튼 색상 */
-            float: right; /* 오른쪽 정렬 */
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black; /* 호버 시 색상 */
-            text-decoration: none;
-            cursor: pointer;
+         .form-group {
+             text-align: left;
+             margin-bottom: 15px;
+         }
+
+         .form-group label {
+             font-size: 14px;
+             font-weight: bold;
+             display: block;
+             margin-bottom: 5px;
+             color: #555;
+         }
+
+         .form-group input {
+             width: 100%;
+             padding: 10px;
+             border: 1px solid #ddd;
+             border-radius: 5px;
+             font-size: 14px;
+         }
+
+         .btn {
+             width: 100%;
+         }
+
+         .error {
+             color: red;
+             font-size: 12px;
+             margin-top: 10px;
+         }
+
+         .links {
+             margin-top: 15px;
+             font-size: 14px;
+         }
+
+         .links a {
+             color: #ff5a5f;
+             text-decoration: none;
+             font-weight: bold;
+         }
+
+         .links a:hover {
+             text-decoration: underline;
+         }
+
+         /* 모달 스타일 */
+         .modal {
+             display: none;
+             position: fixed;
+             z-index: 1000;
+             left: 0;
+             top: 0;
+             width: 100%;
+             height: 100%;
+             background-color: rgba(0, 0, 0, 0.4);
+             justify-content: center;
+             align-items: center;
+         }
+
+         .modal-content {
+             background: white;
+             padding: 20px;
+             width: 350px;
+             border-radius: 8px;
+             text-align: center;
+             position: relative;
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+         }
+
+         .modal h2 {
+             margin-bottom: 15px;
+             font-size: 18px;
+             font-weight: bold;
+             color: #333;
+         }
+
+         .modal .form-group input {
+             width: 100%;
+             padding: 10px;
+             margin-bottom: 10px;
+             border: 1px solid #ddd;
+             border-radius: 5px;
+         }
+
+         .modal .close {
+             position: absolute;
+             right: 15px;
+             top: 10px;
+             font-size: 20px;
+             cursor: pointer;
+             color: #888;
+         }
+
+         .modal .close:hover {
+             color: black;
+         }
+
+         @media (max-width: 500px) {
+             .login-container {
+                 width: 90%;
+                 padding: 20px;
+             }
+
+             .modal-content {
+                 width: 90%;
+             }
+         }
+        .text-white {
+            color: #fff !important;
         }
     </style>
 </head>
@@ -84,7 +162,7 @@
             <div th:if="${session.error}" class="error" role="alert">
                 <span th:text="${session.error}"></span>
             </div>
-            <p>아직 회원가입을 하지 않으셨나요? <a href="/user/signup">회원가입하기</a></p>
+            <p>아직 회원가입을 하지 않으셨나요? <a href="/user/signup">회원가입</a></p>
             <p><a href="#" id="findUsernameBtn">아이디 찾기</a></p>
             <p><a href="#" id="findPasswordBtn">비밀번호 찾기</a></p>
         </div>

@@ -13,7 +13,7 @@ import org.apache.catalina.User;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NotificationEntity extends BaseTimeEntity {
+public class notificationEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class NotificationEntity extends BaseTimeEntity {
     private UserEntity user;
 
     @Builder
-    public NotificationEntity(Long id, String message, boolean isRead, UserEntity user){
+    public notificationEntity(Long id, String message, boolean isRead, UserEntity user){
         this.id = id;
         this.message = message;
         this.isRead = isRead;

@@ -1,6 +1,7 @@
 package Spring.Book.domain.payment.service;
 
 import Spring.Book.domain.admin.product.entity.ProductEntity;
+import Spring.Book.domain.admin.product.entity.ProductStatus;
 import Spring.Book.domain.cart.repository.CartRepository;
 import Spring.Book.domain.event.PurchaseEvent;
 import Spring.Book.domain.order.entity.OrderEntity;
@@ -93,6 +94,11 @@ public class PaymentService {
             orderRepository.save(order);
 
             product.decreaseStock(item.getQuantity());
+
+            if (product.getStock() == 0) {
+                product.setStatus(ProductStatus.품절);
+            }
+
             productRepository.save(product);
 
             cartRepository.deleteByUserIdAndProductId(user.getId(), item.getProductId());

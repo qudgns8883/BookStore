@@ -148,7 +148,73 @@
             color: lightgray; /* 빈 별 색상 */
         }
 
+        .description, .reviews {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
 
+        .description h3, .reviews h3 {
+            font-weight: bold;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .ckeditor-output {
+            font-size: 16px;
+            color: #444;
+            line-height: 1.8;
+        }
+
+        .ckeditor-output img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .ckeditor-output p {
+            margin-bottom: 15px;
+        }
+
+        .ckeditor-output ul, .ckeditor-output ol {
+            margin-left: 20px;
+        }
+
+        .ckeditor-output ul li, .ckeditor-output ol li {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .description {
+                padding: 15px;
+            }
+
+            .description h3 {
+                font-size: 20px;
+            }
+
+            .ckeditor-output {
+                font-size: 14px;
+            }
+        }
+
+        .out-of-stock-price {
+            text-decoration: line-through;
+            color: red;
+        }
+
+        /* 품절 텍스트 스타일 */
+        .out-of-stock-label {
+            color: red;
+            font-weight: bold;
+            margin-left: 10px;
+            font-size: 1.2em;
+        }
     </style>
 </head>
 <body>
@@ -163,8 +229,12 @@
                 <h2 class="product-name" th:text="${product.productName}">상품 이름</h2>
                 <p class="product-description" th:text="${#strings.length(product.description) > 50 ? #strings.substring(product.description, 0, 50) + '...' : product.description}">소개글</p>
                 <p class="product-author" th:text="${product.author} + ' 지음'">작가명</p>
-                <p class="product-price" id="totalPrice" th:text="'₩' + ${product.price}">가격</p>
+                <p class="product-price">
+                    <span id="totalPrice" th:text="${product.productStatus == T(Spring.Book.domain.admin.product.entity.ProductStatus).품절 ? product.price + ' 원' : product.price + ' 원'}"
+                          th:classappend="${product.productStatus == T(Spring.Book.domain.admin.product.entity.ProductStatus).품절 ? ' out-of-stock-price' : ''}"></span>
 
+                    <span th:if="${product.productStatus == T(Spring.Book.domain.admin.product.entity.ProductStatus).품절}" class="out-of-stock-label">품절</span>
+                </p>
                 <p>별점:
                     <span th:each="i : ${#numbers.sequence(0, 4)}">
                       <span th:if="${averageRating > i + 0.5}" class="filled-star">★</span>
@@ -192,7 +262,8 @@
 
                 <div class="product-actions">
                     <button onclick="addToCart()">장바구니 담기</button>
-                    <button>구매하기</button>
+                    <button th:text="${product.productStatus == T(Spring.Book.domain.admin.product.entity.ProductStatus).품절 ? '품절' : '구매하기'}"
+                            th:disabled="${product.productStatus == T(Spring.Book.domain.admin.product.entity.ProductStatus).품절}">구매하기</button>
                 </div>
             </div>
         </div>
@@ -221,7 +292,7 @@
                         <span class="spacing2" th:text="${review.createDate}">작성일</span>
                     </p>
                     <div th:if="${review.answer != null}" class="review-answer">
-                        <span class="answer-label"><strong>관리자 답변:</strong>
+                        <span class="answer-label"><strong>관리자 답변:</strong></span>
                         <span class="answer-content" th:text="${review.answer}"></span>
                     </div>
                     <div class="divider"></div>

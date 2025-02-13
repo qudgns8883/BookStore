@@ -1,6 +1,8 @@
 package Spring.Book.domain.review.service;
 
 import Spring.Book.domain.admin.product.entity.ProductEntity;
+import Spring.Book.domain.event.PurchaseEvent;
+import Spring.Book.domain.event.ReviewEvent;
 import Spring.Book.domain.order.repository.OrderRepository;
 import Spring.Book.domain.payment.repository.PaymentRepository;
 import Spring.Book.domain.product.repository.ProductRepository;
@@ -8,10 +10,13 @@ import Spring.Book.domain.product.service.ProductService;
 import Spring.Book.domain.review.dto.ReviewDto;
 import Spring.Book.domain.review.entity.ReviewEntity;
 import Spring.Book.domain.review.repository.ReviewRepository;
+import Spring.Book.domain.user.entity.Role;
 import Spring.Book.domain.user.entity.UserEntity;
+import Spring.Book.domain.user.repository.UserRepository;
 import Spring.Book.domain.user.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +31,8 @@ public class ReviewService {
     private final UserService userService;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
-
+    private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void submitReview(ReviewDto reviewDto) {
@@ -47,6 +53,18 @@ public class ReviewService {
 
         user.addReview(reviewEntity);
         reviewRepository.save(reviewEntity);
+
+        List<UserEntity> admins = userRepository.findByRole(Role.ADMIN);
+
+        if (admins.isEmpty()) {
+            throw new IllegalArgumentException("관리자를 찾을 수 없음");
+        }
+
+        String notificationMessage = user.getNickname() + "님이 '" + product.getProductName() + "' 제품에 리뷰를 남겼습니다.";
+
+        for (UserEntity admin : admins) {
+            eventPublisher.publishEvent(new ReviewEvent(this, notificationMessage, admin.getId()));
+        }
     }
 
     public boolean hasPurchased(Long productId) {

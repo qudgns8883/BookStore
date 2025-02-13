@@ -61,7 +61,7 @@
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="/home">Start Bootstrap</a>
+            <a class="navbar-brand" href="/home">도 서</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
@@ -112,90 +112,112 @@
     </nav>
 </div>
 <!-- Header-->
-<header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
+<header class="bg-dark py-4">
+    <div class="container px-3 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Shop in style</h1>
-            <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+            <h1 class="display-4 fw-bolder">책과 함께하는 하루</h1>
+            <p class="lead fw-normal text-white-50 mb-0">원하는 책을 쉽고 편리하게 쇼핑하세요</p>
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const userLoggedIn = [[${userLoggedIn}]];
-            const userId = [[${userId != null ? userId : 'null'}]];
+       document.addEventListener('DOMContentLoaded', function() {
+           const userLoggedIn = [[${userLoggedIn}]];
+           const userId = [[${userId != null ? userId : 'null'}]];
+           let eventSource;
 
-            if (userLoggedIn) {
-                fetchCartCount();
-                checkUnreadNotifications();
-                setupEventSource();
-                setupNotificationClick();
-            } else {
-                document.getElementById('cart-count').textContent = '0';
-            }
+           if (userLoggedIn) {
+               fetchCartCount();
+               setupEventSource();
+               checkUnreadNotifications();
+               setupNotificationClick();
+           } else {
+               document.getElementById('cart-count').textContent = '0';
+           }
 
-            function fetchCartCount() {
-                fetch('/cart/count')
-                    .then(response => response.json())
-                    .then(count => {
-                        document.getElementById('cart-count').textContent = count;
-                    })
-                    .catch(error => console.error('Error fetching cart count:', error));
-            }
+           function fetchCartCount() {
+               fetch('/cart/count')
+                   .then(response => response.json())
+                   .then(count => {
+                       document.getElementById('cart-count').textContent = count;
+                   })
+                   .catch(error => console.error('Error fetching cart count:', error));
+           }
 
-            function checkUnreadNotifications() {
-                fetch(`/notifications/unread?userId=${userId}`)
-                    .then(response => response.json())
-                    .then(hasUnread => {
-                        const notificationIcon = document.querySelector('.notification-icon');
-                        notificationIcon.src = hasUnread ? '/images/bell.png' : '/images/bell2.png';
-                    })
-                    .catch(error => console.error('Error fetching unread notifications:', error));
-            }
+           function checkUnreadNotifications() {
+               fetch(`/notifications/unread?userId=${userId}`)
+                   .then(response => response.json())
+                   .then(hasUnread => {
+                       const notificationIcon = document.querySelector('.notification-icon');
+                       notificationIcon.src = hasUnread ? '/images/bell.png' : '/images/bell2.png';
+                   })
+                   .catch(error => console.error('Error fetching unread notifications:', error));
+           }
 
-            function setupEventSource() {
-                const eventSource = new EventSource('/notifications/subscribe?userId=' + userId);
+           function setupEventSource() {
+                if (eventSource && eventSource.readyState === EventSource.OPEN) {
+                    console.log("이미 연결이 열려 있습니다.");
+                    return;  // 이미 연결이 열려있다면, 새로 연결을 시도하지 않음
+                }
+
+                eventSource = new EventSource('/notifications/subscribe?userId=' + userId);
+
+                eventSource.onopen = function() {
+                    console.log("SSE connection established.");
+                };
+
+                eventSource.onerror = function(err) {
+                    console.error("SSE error: ", err);
+                    // SSE 연결에 오류가 발생하면 3초 후에 재연결을 시도
+                    setTimeout(function() {
+                        console.log("SSE 재연결 시도...");
+                        setupEventSource(); // 재연결 함수 호출
+                    }, 3000);
+                };
+
                 eventSource.addEventListener('notification', function(event) {
+                    console.log("Received notification:", event.data);
                     const notificationIcon = document.querySelector('.notification-icon');
-                    notificationIcon.src = event.data.trim() ? '/images/bell.png' : '/images/bell2.png';
+                    notificationIcon.src = '/images/bell.png';
                 });
             }
 
-            function setupNotificationClick() {
-                document.getElementById('notification-link').addEventListener('click', function(event) {
-                    event.preventDefault();
-                    markNotificationsAsRead();
-                });
-            }
 
-            function markNotificationsAsRead() {
-                fetch(`/notifications/read?userId=${userId}`, { method: 'PUT' })
-                    .then(response => {
-                        if (response.ok) {
-                            document.querySelector('.notification-icon').src = '/images/bell2.png';
-                            fetchNotifications();
-                        } else {
-                            console.error('Failed to mark notification as read');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
+           function setupNotificationClick() {
+               document.getElementById('notification-link').addEventListener('click', function(event) {
+                   event.preventDefault();
+                   markNotificationsAsRead();
+               });
+           }
 
-            function fetchNotifications() {
-                fetch(`/notifications/list?userId=${userId}`)
-                    .then(response => response.json())
-                    .then(notifications => {
-                        const notificationList = document.getElementById('notification-list');
-                        notificationList.innerHTML = '';
-                        notifications.forEach(notification => {
-                            const li = document.createElement('li');
-                            li.classList.add('dropdown-item');
-                            li.textContent = notification.message;
-                            notificationList.appendChild(li);
-                        });
-                    })
-                    .catch(error => console.error('Error fetching notifications:', error));
-            }
-        });
+           function markNotificationsAsRead() {
+               fetch(`/notifications/read?userId=${userId}`, { method: 'PUT' })
+                   .then(response => {
+                       if (response.ok) {
+                           document.querySelector('.notification-icon').src = '/images/bell2.png';
+                           fetchNotifications();
+                       } else {
+                           console.error('Failed to mark notification as read');
+                       }
+                   })
+                   .catch(error => console.error('Error:', error));
+           }
+
+           function fetchNotifications() {
+               fetch(`/notifications/list?userId=${userId}`)
+                   .then(response => response.json())
+                   .then(notifications => {
+                       const notificationList = document.getElementById('notification-list');
+                       notificationList.innerHTML = '';
+                       notifications.forEach(notification => {
+                           const li = document.createElement('li');
+                           li.classList.add('dropdown-item');
+                           li.textContent = notification.message;
+                           notificationList.appendChild(li);
+                       });
+                   })
+                   .catch(error => console.error('Error fetching notifications:', error));
+           }
+       });
     </script>
 </header>
 </body>

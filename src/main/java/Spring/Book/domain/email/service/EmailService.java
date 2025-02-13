@@ -28,6 +28,8 @@ public class EmailService {
 
         String verificationCode = generateVerificationCode();
 
+        System.out.println("인증번호" + verificationCode);
+
         String mailContent = "";
         mailContent += "<h3>" + "요청하신 인증 번호입니다." + "</h3>";
         mailContent += "<h1>" + verificationCode + "</h1>";

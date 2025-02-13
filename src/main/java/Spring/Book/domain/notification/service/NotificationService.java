@@ -1,9 +1,8 @@
 package Spring.Book.domain.notification.service;
 
-import Spring.Book.domain.notification.dto.NotificationDto;
-import Spring.Book.domain.notification.entity.NotificationEntity;
+import Spring.Book.domain.notification.dto.PurchaseEntityDto;
+import Spring.Book.domain.notification.entity.notificationEntity;
 import Spring.Book.domain.notification.repository.NotificationRepository;
-import Spring.Book.domain.order.repository.OrderRepository;
 import Spring.Book.domain.user.entity.UserEntity;
 import Spring.Book.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +21,11 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
 
     @Transactional
-    public void createNotification(Long adminId, String notificationMessage) {
+    public void notificationEvent(Long adminId, String notificationMessage) {
         UserEntity admin = userRepository.findById(adminId)
                 .orElseThrow(() -> new IllegalArgumentException("관리자를 찾을 수 없음"));
 
-        NotificationEntity notification = NotificationEntity.builder()
+        notificationEntity notification = notificationEntity.builder()
                 .user(admin)
                 .isRead(false)
                 .message(notificationMessage)
@@ -36,8 +35,26 @@ public class NotificationService {
     }
 
     @Transactional
+    public void RegistrationEvent(Long userId, String notificationMessage) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("신규화원을 찾을 수 없습니다."));
+
+        int currentMileage = (user.getMileage() != null) ? user.getMileage() : 0;
+        user.setMileage(currentMileage + 3000);
+
+        notificationEntity notification = notificationEntity.builder()
+                .user(user)
+                .isRead(false)
+                .message(notificationMessage)
+                .build();
+
+        notificationRepository.save(notification);
+
+    }
+
+    @Transactional
     public void markAllAsRead(Long userId) {
-        List<NotificationEntity> notifications = notificationRepository.findByUserId(userId);
+        List<notificationEntity> notifications = notificationRepository.findByUserId(userId);
         notifications.forEach(notification -> {
             notification.setRead(true);
         });
@@ -48,10 +65,10 @@ public class NotificationService {
         return notificationRepository.existsByUserIdAndIsReadFalse(userId);
     }
 
-    public List<NotificationDto> getAllNotificationsByUserId(Long userId) {
-        List<NotificationEntity> notifications = notificationRepository.findByUserId(userId);
+    public List<PurchaseEntityDto> getAllNotificationsByUserId(Long userId) {
+        List<notificationEntity> notifications = notificationRepository.findByUserId(userId);
         return notifications.stream()
-                .map(notification -> new NotificationDto(notification.getMessage(), notification.isRead()))
+                .map(notification -> new PurchaseEntityDto(notification.getMessage(), notification.isRead()))
                 .collect(Collectors.toList());
     }
 }

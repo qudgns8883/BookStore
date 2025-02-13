@@ -39,11 +39,7 @@ public class UserController {
     @GetMapping("/user/signup")
     public String signup(@ModelAttribute("userDto") UserDto userDto, Model model) {
 
-        UserDto updatedUserDto = userDto.toBuilder()
-                .mileage(userDto.getMileage() != null ? userDto.getMileage() : 1000)
-                .build();
-
-        model.addAttribute("userDto", updatedUserDto);
+        model.addAttribute("userDto", userDto);
 
         return "user/signup";
     }

@@ -95,6 +95,13 @@ public class UserEntity extends BaseTimeEntity {
         carts.add(cart);
     }
 
+    @PrePersist
+    public void prePersist() {
+        if (mileage == null) {
+            mileage = 0;
+        }
+    }
+
     public void addPayment(PaymentEntity payment){
         payment.setUser(this);
         payments.add(payment);

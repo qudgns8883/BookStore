@@ -8,13 +8,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NotificationDto {
+public class PurchaseEntityDto {
 
     private String message;
     private boolean isRead;
 
     @Builder
-    public NotificationDto(String message, boolean isRead) {
+    public PurchaseEntityDto(String message, boolean isRead) {
         this.message = message;
         this.isRead = isRead;
     }
