@@ -2,6 +2,7 @@ package Spring.Book.domain.review.controller;
 
 import Spring.Book.domain.review.dto.ReviewDto;
 import Spring.Book.domain.review.service.ReviewService;
+import Spring.global.aspect.Loggable;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.angus.mail.iap.Response;
@@ -19,6 +20,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @Loggable("REVIEW_CREATED")
     @PostMapping("/addReview")
     public ResponseEntity<List<ReviewDto>> submitReview(@RequestBody ReviewDto reviewDto) {
 

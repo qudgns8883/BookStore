@@ -1,6 +1,6 @@
 package Spring.Book.domain.notification.service;
 
-import Spring.Book.domain.notification.dto.PurchaseEntityDto;
+import Spring.Book.domain.notification.dto.NotificationDto;
 import Spring.Book.domain.notification.entity.notificationEntity;
 import Spring.Book.domain.notification.repository.NotificationRepository;
 import Spring.Book.domain.user.entity.UserEntity;
@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,17 +22,24 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
 
     @Transactional
-    public void notificationEvent(Long adminId, String notificationMessage) {
-        UserEntity admin = userRepository.findById(adminId)
-                .orElseThrow(() -> new IllegalArgumentException("관리자를 찾을 수 없음"));
+    public void notificationEvent(List<Long> adminIds, String notificationMessage) {
+        List<UserEntity> admins = userRepository.findAllById(adminIds);
 
-        notificationEntity notification = notificationEntity.builder()
-                .user(admin)
-                .isRead(false)
-                .message(notificationMessage)
-                .build();
+        if (admins.isEmpty()) {
+            throw new IllegalArgumentException("관리자들을 찾을 수 없음");
+        }
 
-        notificationRepository.save(notification);
+        List<notificationEntity> notifications = new ArrayList<>();
+        for (UserEntity admin : admins) {
+            notificationEntity notification = notificationEntity.builder()
+                    .user(admin)
+                    .isRead(false)
+                    .message(notificationMessage)
+                    .build();
+            notifications.add(notification);
+        }
+
+        notificationRepository.saveAll(notifications); // 배치 저장
     }
 
     @Transactional
@@ -65,10 +73,10 @@ public class NotificationService {
         return notificationRepository.existsByUserIdAndIsReadFalse(userId);
     }
 
-    public List<PurchaseEntityDto> getAllNotificationsByUserId(Long userId) {
+    public List<NotificationDto> getAllNotificationsByUserId(Long userId) {
         List<notificationEntity> notifications = notificationRepository.findByUserId(userId);
         return notifications.stream()
-                .map(notification -> new PurchaseEntityDto(notification.getMessage(), notification.isRead()))
+                .map(notification -> new NotificationDto(notification.getMessage(), notification.isRead()))
                 .collect(Collectors.toList());
     }
 }

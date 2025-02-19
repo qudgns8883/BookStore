@@ -1,6 +1,6 @@
-package Spring.global.handler;
+package Spring.global.listener;
 
-import Spring.Book.domain.event.PurchaseEvent;
+import Spring.global.event.ReviewEvent;
 import Spring.Book.domain.notification.service.NotificationService;
 import Spring.Book.domain.notification.service.SseService;
 import lombok.RequiredArgsConstructor;
@@ -9,15 +9,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PurchaseEventEventListener {
+public class ReviewRegistration {
 
     private final NotificationService notificationService;
     private final SseService sseService;
 
     @EventListener
-    public void handlePurchaseEvent(PurchaseEvent event) {
+    public void handleReviewEvent(ReviewEvent event) {
 
-        notificationService.notificationEvent(event.getAdminId(), event.getNotificationMessage());
+        notificationService.notificationEvent(event.getUserId(), event.getNotificationMessage());
+        System.out.println("🚀 SSE 알림 전송 시작...");
         sseService.sendMessageToUser(event.getNotificationMessage());
     }
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,9 +47,11 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
-    public ErrorResult exHandle(Exception e) {
-        log.error("[exceptionHandle] ex", e);
-        return new ErrorResult("EX", "내부 오류");
+    public ResponseEntity<ErrorResult> exHandle(Exception e) {
+        ErrorResult errorResult = new ErrorResult("ERROR", e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(errorResult);
     }
 
     @ExceptionHandler

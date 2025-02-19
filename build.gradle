@@ -33,6 +33,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.0.0'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-test'
@@ -41,6 +43,8 @@ dependencies {
 	implementation 'javax.mail:javax.mail-api:1.6.2'
 	// Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//	// kafka
+//	implementation 'org.springframework.kafka:spring-kafka:3.2.0'
 }
 
 tasks.named('test') {

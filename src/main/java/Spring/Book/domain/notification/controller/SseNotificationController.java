@@ -1,6 +1,6 @@
 package Spring.Book.domain.notification.controller;
 
-import Spring.Book.domain.notification.dto.PurchaseEntityDto;
+import Spring.Book.domain.notification.dto.NotificationDto;
 import Spring.Book.domain.notification.service.NotificationService;
 import Spring.Book.domain.notification.service.SseService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor
-public class NotificationController{
+public class SseNotificationController{
 
     private final SseService sseService;
     private final NotificationService notificationService;
@@ -37,8 +37,8 @@ public class NotificationController{
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<PurchaseEntityDto>> getNotifications(@RequestParam Long userId) {
-        List<PurchaseEntityDto> notifications = notificationService.getAllNotificationsByUserId(userId);
+    public ResponseEntity<List<NotificationDto>> getNotifications(@RequestParam Long userId) {
+        List<NotificationDto> notifications = notificationService.getAllNotificationsByUserId(userId);
         return ResponseEntity.ok(notifications);
     }
 }

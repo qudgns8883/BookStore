@@ -1,7 +1,6 @@
 package Spring.Book.domain.user.service;
 
-import Spring.Book.domain.event.UserRegisteredEvent;
-import Spring.Book.domain.user.dto.Address;
+import Spring.global.event.UserRegisteredEvent;
 import Spring.Book.domain.user.dto.FindEmailDto;
 import Spring.Book.domain.user.dto.UserDto;
 import Spring.Book.domain.user.entity.Role;

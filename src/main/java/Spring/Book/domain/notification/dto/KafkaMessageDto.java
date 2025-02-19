@@ -5,17 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class PurchaseEntityDto {
+public class KafkaMessageDto {
 
     private String message;
-    private boolean isRead;
+    private List<Long> userId;
 
     @Builder
-    public PurchaseEntityDto(String message, boolean isRead) {
+    public KafkaMessageDto(String message, List<Long> userId) {
         this.message = message;
-        this.isRead = isRead;
+        this.userId = userId;
     }
 }

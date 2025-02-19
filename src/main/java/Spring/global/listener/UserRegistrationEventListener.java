@@ -1,7 +1,6 @@
-package Spring.global.handler;
+package Spring.global.listener;
 
-import Spring.Book.domain.event.PurchaseEvent;
-import Spring.Book.domain.event.ReviewEvent;
+import Spring.global.event.UserRegisteredEvent;
 import Spring.Book.domain.notification.service.NotificationService;
 import Spring.Book.domain.notification.service.SseService;
 import lombok.RequiredArgsConstructor;
@@ -10,15 +9,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ReviewRegistrationEventListener {
+public class UserRegistrationEventListener {
 
     private final NotificationService notificationService;
     private final SseService sseService;
 
     @EventListener
-    public void handlePurchaseEvent(ReviewEvent event) {
-
-        notificationService.notificationEvent(event.getUserId(), event.getNotificationMessage());
-        sseService.sendMessageToUser(event.getNotificationMessage());
+    public void handleUserRegisteredEvent(UserRegisteredEvent event) {
+        notificationService.RegistrationEvent(event.getUserId(), event.getRegisteredMessage());
+        sseService.sendMessageToUser(event.getRegisteredMessage());
     }
 }

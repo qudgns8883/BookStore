@@ -3,7 +3,8 @@ package Spring.Book.domain.payment.service;
 import Spring.Book.domain.admin.product.entity.ProductEntity;
 import Spring.Book.domain.admin.product.entity.ProductStatus;
 import Spring.Book.domain.cart.repository.CartRepository;
-import Spring.Book.domain.event.PurchaseEvent;
+import Spring.Book.domain.notification.dto.KafkaMessageDto;
+import Spring.Book.domain.notification.service.KafkaProducer;
 import Spring.Book.domain.order.entity.OrderEntity;
 import Spring.Book.domain.order.repository.OrderRepository;
 import Spring.Book.domain.payment.dto.PaymentRequest;
@@ -14,6 +15,7 @@ import Spring.Book.domain.user.entity.Role;
 import Spring.Book.domain.user.entity.UserEntity;
 import Spring.Book.domain.user.repository.UserRepository;
 import Spring.Book.domain.user.service.UserService;
+import Spring.global.aspect.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,9 @@ public class PaymentService {
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final KafkaProducer kafkaProducer;
 
+    @Loggable("ORDER_PAYMENT")
     @Transactional
     public String saveOrder(PaymentRequest paymentRequest) {
         UserEntity user = userService.getCurrentUser();
@@ -109,6 +113,8 @@ public class PaymentService {
 
         List<UserEntity> admins = userRepository.findByRole(Role.ADMIN);
 
+        List<Long> adminIds = admins.stream().map(UserEntity::getId).toList();
+
         if (admins.isEmpty()) {
             throw new IllegalArgumentException("관리자를 찾을 수 없음");
         }
@@ -118,9 +124,8 @@ public class PaymentService {
         String notificationMessage = user.getNickname() + "님이 총 " + productSummaries.size() + "개의 상품을 "
                 + totalQuantity + "개 주문했습니다. (" + productMessage + ")";
 
-        for (UserEntity admin : admins) {
-            eventPublisher.publishEvent(new PurchaseEvent(this, notificationMessage, admin.getId()));
-        }
+        KafkaMessageDto message = new KafkaMessageDto(notificationMessage, adminIds);
+        kafkaProducer.sendNotification(message);
     }
 
     private void updateUserMileage(UserEntity user, int mileageUsed, int earnedMileage) {

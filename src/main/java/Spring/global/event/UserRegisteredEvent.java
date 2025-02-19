@@ -1,4 +1,4 @@
-package Spring.Book.domain.event;
+package Spring.global.event;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
