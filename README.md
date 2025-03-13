@@ -36,23 +36,36 @@
 - **로그 페이지**: AOP를 사용하여 특정 이벤트 발생 시 로그 수집 및 관리  
 
 ---
+## **3. 기능별 화면 및 소개**
 
-## 3. 기능별 화면 및 소개
-**회원가입 & 로그인**
-![Image](https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589)  
-![Image](https://github.com/user-attachments/assets/aa6e99a5-03c0-4c64-81ff-e64b4a489eaf)  
-**상품 조회**
-![Image](https://github.com/user-attachments/assets/389216e2-062b-4bab-8dc6-e7f46083804e)  
-**장바구니**
-![Image](https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76)  
-**주문**
-![Image](https://github.com/user-attachments/assets/f40590b8-31fa-4949-ac30-10222dad0d22)  
-**주문 내역**
-![Image](https://github.com/user-attachments/assets/94f62c38-0ee9-4e10-971f-019b697287f6)  
-**알림**
-![Image](https://github.com/user-attachments/assets/2756c754-199a-4cd0-94f3-d13181923838)
-![Image](https://github.com/user-attachments/assets/a24d5732-cdcc-4b25-8e91-d38728ec2832)
-**마이페이지**
-![Image](https://github.com/user-attachments/assets/e6696ed3-70a3-4fc7-9d0c-96bf9035b9d5)
-![Image](https://github.com/user-attachments/assets/0d8274e2-3ecf-42a7-bd99-0f267c6f08ff)
-![Image](https://github.com/user-attachments/assets/7a1572b6-91d3-4cdd-8692-ae0719ac2eac)
+### **회원가입 & 로그인**  
+<img src="https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589" width="45%">  
+<img src="https://github.com/user-attachments/assets/aa6e99a5-03c0-4c64-81ff-e64b4a489eaf" width="45%">  
+---
+
+### **🛒 상품 조회**  
+<img src="https://github.com/user-attachments/assets/389216e2-062b-4bab-8dc6-e7f46083804e" width="70%">  
+---
+
+### **장바구니**  
+<img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76" width="70%">  
+---
+
+### **주문 & 결제**  
+<img src="https://github.com/user-attachments/assets/f40590b8-31fa-4949-ac30-10222dad0d22" width="70%">  
+---
+
+### **📦 주문 내역 조회**  
+<img src="https://github.com/user-attachments/assets/94f62c38-0ee9-4e10-971f-019b697287f6" width="70%">  
+---
+
+### **🔔 알림 시스템**  
+
+<img src="https://github.com/user-attachments/assets/2756c754-199a-4cd0-94f3-d13181923838" width="45%">  
+<img src="https://github.com/user-attachments/assets/a24d5732-cdcc-4b25-8e91-d38728ec2832" width="45%">  
+---
+
+### **👤 마이페이지**  
+<img src="https://github.com/user-attachments/assets/e6696ed3-70a3-4fc7-9d0c-96bf9035b9d5" width="45%">  
+<img src="https://github.com/user-attachments/assets/0d8274e2-3ecf-42a7-bd99-0f267c6f08ff" width="45%">  
+<img src="https://github.com/user-attachments/assets/7a1572b6-91d3-4cdd-8692-ae0719ac2eac" width="70%">  
