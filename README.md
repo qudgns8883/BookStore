@@ -39,7 +39,7 @@
 ## **3. 기능별 화면 및 소개**
 
 ### **회원가입 & 로그인**  
-<img src="https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589" width="45%">  
+<img src="https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589" width="20%">  
 <img src="https://github.com/user-attachments/assets/aa6e99a5-03c0-4c64-81ff-e64b4a489eaf" width="45%">  
 
 ---
@@ -73,5 +73,5 @@
 
 ### **마이페이지**  
 <img src="https://github.com/user-attachments/assets/e6696ed3-70a3-4fc7-9d0c-96bf9035b9d5" width="45%">  
-<img src="https://github.com/user-attachments/assets/0d8274e2-3ecf-42a7-bd99-0f267c6f08ff" width="45%">  
+<img src="https://github.com/user-attachments/assets/0d8274e2-3ecf-42a7-bd99-0f267c6f08ff" width="20%">
 <img src="https://github.com/user-attachments/assets/7a1572b6-91d3-4cdd-8692-ae0719ac2eac" width="45%">  
