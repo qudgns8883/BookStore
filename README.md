@@ -36,21 +36,23 @@
 - **로그 페이지**: AOP를 사용하여 특정 이벤트 발생 시 로그 수집 및 관리  
 
 ---
-![Image](https://github.com/user-attachments/assets/a9ad5c63-d515-4f55-b47b-c8254e642c49)
+
 ## 3. 기능별 화면 및 소개
 **회원가입 & 로그인**
-![image.png](attachment:b1cf9b25-1352-45a9-a2ab-08f1e2edb154:image.png)
-![image.png](attachment:e361d709-5e5c-4f5b-8902-25486d4efbf6:image.png)
-![image.png](attachment:44bccd91-3f14-4a9a-9de4-f04a861686ee:image.png)
+![Image](https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589)  
+![Image](https://github.com/user-attachments/assets/aa6e99a5-03c0-4c64-81ff-e64b4a489eaf)  
 **상품 조회**
-![image.png](attachment:81da4b54-75a2-495e-8445-8624fc0f8161:image.png)
+![Image](https://github.com/user-attachments/assets/389216e2-062b-4bab-8dc6-e7f46083804e)  
 **장바구니**
-![image.png](attachment:aed481b3-01b5-474b-adf2-c041e59df2d6:image.png)
+![Image](https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76)  
 **주문**
-![image.png](attachment:68ebdb7c-c697-467f-9ef8-a28788819a92:image.png)
+![Image](https://github.com/user-attachments/assets/f40590b8-31fa-4949-ac30-10222dad0d22)  
 **주문 내역**
-![image.png](attachment:30d70602-36a0-4b45-8b23-1a64e7429c1e:image.png)
+![Image](https://github.com/user-attachments/assets/94f62c38-0ee9-4e10-971f-019b697287f6)  
 **알림**
-![image.png](attachment:9c850c06-840c-4648-87c1-186a3852deca:image.png)![image.png](attachment:f5799de8-959a-4689-8099-39fabd4f7031:image.png)
+![Image](https://github.com/user-attachments/assets/2756c754-199a-4cd0-94f3-d13181923838)
+![Image](https://github.com/user-attachments/assets/a24d5732-cdcc-4b25-8e91-d38728ec2832)
 **마이페이지**
-![image.png](attachment:b297ead1-6a15-430b-95c5-0936a44881bb:image.png)![image.png](attachment:c342200b-4d06-4ad3-8813-86756b3014bb:image.png)![image.png](attachment:f761d787-e187-4f56-8e7f-80f90cc72a17:image.png)
+![Image](https://github.com/user-attachments/assets/e6696ed3-70a3-4fc7-9d0c-96bf9035b9d5)
+![Image](https://github.com/user-attachments/assets/0d8274e2-3ecf-42a7-bd99-0f267c6f08ff)
+![Image](https://github.com/user-attachments/assets/7a1572b6-91d3-4cdd-8692-ae0719ac2eac)
