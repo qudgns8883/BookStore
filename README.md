@@ -39,9 +39,18 @@
 
 ## 3. 기능별 화면 및 소개
 **회원가입 & 로그인**
-
-
-
-
-
-
+![image.png](attachment:b1cf9b25-1352-45a9-a2ab-08f1e2edb154:image.png)
+![image.png](attachment:e361d709-5e5c-4f5b-8902-25486d4efbf6:image.png)
+![image.png](attachment:44bccd91-3f14-4a9a-9de4-f04a861686ee:image.png)
+**상품 조회**
+![image.png](attachment:81da4b54-75a2-495e-8445-8624fc0f8161:image.png)
+**장바구니**
+![image.png](attachment:aed481b3-01b5-474b-adf2-c041e59df2d6:image.png)
+**주문**
+![image.png](attachment:68ebdb7c-c697-467f-9ef8-a28788819a92:image.png)
+**주문 내역**
+![image.png](attachment:30d70602-36a0-4b45-8b23-1a64e7429c1e:image.png)
+**알림**
+![image.png](attachment:9c850c06-840c-4648-87c1-186a3852deca:image.png)![image.png](attachment:f5799de8-959a-4689-8099-39fabd4f7031:image.png)
+**마이페이지**
+![image.png](attachment:b297ead1-6a15-430b-95c5-0936a44881bb:image.png)![image.png](attachment:c342200b-4d06-4ad3-8813-86756b3014bb:image.png)![image.png](attachment:f761d787-e187-4f56-8e7f-80f90cc72a17:image.png)
