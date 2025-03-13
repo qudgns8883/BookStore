@@ -36,7 +36,7 @@
 - **로그 페이지**: AOP를 사용하여 특정 이벤트 발생 시 로그 수집 및 관리  
 
 ---
-
+![Image](https://github.com/user-attachments/assets/a9ad5c63-d515-4f55-b47b-c8254e642c49)
 ## 3. 기능별 화면 및 소개
 **회원가입 & 로그인**
 ![image.png](attachment:b1cf9b25-1352-45a9-a2ab-08f1e2edb154:image.png)
