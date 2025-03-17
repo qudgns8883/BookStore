@@ -98,6 +98,6 @@
 ---
 
 ### **이벤트로그**  
-![Image](https://github.com/user-attachments/assets/b3c09018-2a19-4c85-8502-a61af8026ff3)
+![Image](https://github.com/user-attachments/assets/23f60174-c217-48cf-98dd-1dd5d84f6d3b)
 
 
