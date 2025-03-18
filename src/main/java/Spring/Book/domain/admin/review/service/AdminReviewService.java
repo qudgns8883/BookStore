@@ -32,7 +32,6 @@ public class AdminReviewService {
 
         List<ReviewEntity> reviews = adminReviewRepository.findAllWithProduct();
 
-
         if (!"전체리뷰".equals(status)) {
             reviews = reviews.stream()
                     .filter(review -> review.getStatus().equals(status))

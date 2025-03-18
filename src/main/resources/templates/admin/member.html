@@ -8,65 +8,61 @@
     <title>회원 관리</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* 전체 페이지 스타일 */
      body {
-         font-family: Arial, sans-serif; /* 기본 폰트 설정 */
-         padding: 20px; /* 페이지 내부 여백 설정 */
-         background-color: #f9f9f9; /* 배경 색상을 밝은 회색으로 설정 */
+         font-family: Arial, sans-serif;
+         padding: 20px;
+         background-color: #f9f9f9;
      }
 
-     /* 회원 요약 정보 상자 스타일 */
      .summary-box {
-         display: flex; /* 내부 요소를 가로로 배치 */
-         justify-content: space-between; /* 요소 간 간격을 동일하게 설정 */
-         background-color: #ffffff; /* 배경 색상을 흰색으로 설정 */
-         padding: 20px; /* 상자 내부 여백 설정 */
-         margin-bottom: 20px; /* 아래쪽에 여백 추가 */
-         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 추가 */
+         display: flex;
+         justify-content: space-between;
+         background-color: #ffffff;
+         padding: 20px;
+         margin-bottom: 20px;
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
      }
 
      .summary-box div {
-         text-align: center; /* 텍스트를 가운데 정렬 */
-         flex: 1; /* 각 요소의 크기를 동일하게 설정 */
+         text-align: center;
+         flex: 1;
      }
 
      .summary-box div:not(:last-child) {
-         border-right: 1px solid #ddd; /* 마지막 요소를 제외한 요소 사이에 구분선 추가 */
+         border-right: 1px solid #ddd;
      }
 
-     /* 검색 박스 스타일 */
      .search-box {
-         background-color: #ffffff; /* 배경 색상을 흰색으로 설정 */
-         padding: 20px; /* 상자 내부 여백 설정 */
-         margin-bottom: 20px; /* 아래쪽에 여백 추가 */
-         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 추가 */
+         background-color: #ffffff;
+         padding: 20px;
+         margin-bottom: 20px;
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
      }
 
       .search-box .form-group {
-        display: block; /* 한 줄씩 배치 */
-        margin-bottom: 10px; /* 요소 간 여백 추가 */
+        display: block;
+        margin-bottom: 10px;
     }
-     /* 검색 결과 상자 스타일 */
+
      .result-box {
-         background-color: #ffffff; /* 배경 색상을 흰색으로 설정 */
-         padding: 20px; /* 상자 내부 여백 설정 */
-         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 추가 */
+         background-color: #ffffff;
+         padding: 20px;
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
      }
 
-     /* 테이블 스타일 */
      table {
-         width: 100%; /* 테이블의 너비를 상자 너비에 맞게 설정 */
-         border-collapse: collapse; /* 테이블 경계선을 겹치지 않도록 설정 */
+         width: 100%;
+         border-collapse: collapse;
      }
 
      table th, table td {
-         text-align: left; /* 텍스트를 왼쪽 정렬 */
-         padding: 8px; /* 셀 내부 여백 설정 */
-         border: 1px solid #ddd; /* 셀 경계선 설정 */
+         text-align: left;
+         padding: 8px;
+         border: 1px solid #ddd;
      }
 
      table th {
-         background-color: #f4f4f4; /* 테이블 헤더 배경 색상을 밝은 회색으로 설정 */
+         background-color: #f4f4f4;
      }
     </style>
 </head>

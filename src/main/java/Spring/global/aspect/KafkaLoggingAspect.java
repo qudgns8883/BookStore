@@ -18,7 +18,7 @@ public class KafkaLoggingAspect {
     public Object logKafkaMessage(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         if (args.length > 0 && args[0] instanceof KafkaMessageDto message) {
-            // Kafka 메시지 로그 출력
+
             logger.info("Kafka Message Sent: {}", message);
         }
         return joinPoint.proceed();

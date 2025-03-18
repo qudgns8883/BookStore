@@ -1,6 +1,8 @@
 package Spring.Book.domain.review.service;
 
 import Spring.Book.domain.admin.product.entity.ProductEntity;
+import Spring.Book.domain.notification.dto.KafkaMessageDto;
+import Spring.Book.domain.notification.service.KafkaProducer;
 import Spring.global.event.ReviewEvent;
 import Spring.Book.domain.order.repository.OrderRepository;
 import Spring.Book.domain.product.repository.ProductRepository;
@@ -24,12 +26,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final ReviewRepository reviewRepository; // 리뷰 저장소 주입
+    private final ReviewRepository reviewRepository;
     private final UserService userService;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
-    private final ApplicationEventPublisher eventPublisher;
+    private final KafkaProducer kafkaProducer;
 
     @Transactional
     public void submitReview(ReviewDto reviewDto) {
@@ -61,8 +63,8 @@ public class ReviewService {
 
         String notificationMessage = user.getNickname() + "님이 '" + product.getProductName() + "' 제품에 리뷰를 남겼습니다.";
 
-        ReviewEvent reviewEvent = new ReviewEvent(this, notificationMessage, adminIds);
-        eventPublisher.publishEvent(reviewEvent);
+        KafkaMessageDto message = new KafkaMessageDto(notificationMessage, adminIds);
+        kafkaProducer.sendNotification(message);
 
         reviewDto.setAuthor(user.getNickname());
         reviewDto.setProductName(product.getProductName());
@@ -95,7 +97,7 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional // 트랜잭션 관리
+    @Transactional
     public void deleteReview(Long reviewId) {
         ReviewEntity review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다. ID: " + reviewId));
@@ -115,6 +117,4 @@ public class ReviewService {
                 .createDate(review.getCreateDateAsString())
                 .build();
     }
-
-
 }

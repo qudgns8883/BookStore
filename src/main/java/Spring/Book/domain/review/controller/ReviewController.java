@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -25,11 +26,11 @@ public class ReviewController {
     public ResponseEntity<List<ReviewDto>> submitReview(@RequestBody ReviewDto reviewDto) {
 
         if (!reviewService.hasPurchased(reviewDto.getProductId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Collections.emptyList());
         }
 
         if (reviewService.hasReviewed(reviewDto.getProductId())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.emptyList());
         }
 
         reviewService.submitReview(reviewDto);

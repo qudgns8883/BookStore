@@ -45,16 +45,14 @@ public class LogAspect {
 
                 if (extractor != null) {
                     // 인자 추출
-                    String extractedParams = objectMapper.writeValueAsString(extractor.extractParameters(args));
+                    Map<String, Object> extractedParams = extractor.extractParameters(args);
                     log.info("📌 추출된 parameters: {}", extractedParams);
-                    logData.put("parameters", extractedParams);
+                    logData.put("parameters", extractedParams);  // JSON 형태로 추가
                 } else {
                     log.warn("⚠️ No extractor found for event: {}", loggable.value());
                     logData.put("parameters", Arrays.toString(args));
                 }
             }
-
-
 
             //실행 후 처리
             long executionTime = System.currentTimeMillis() - start;
@@ -71,7 +69,7 @@ public class LogAspect {
             return result;
 
         } catch (Exception e) {
-            logError(joinPoint, loggable, e);  // 예외 발생 시 로그 처리
+            logError(joinPoint, loggable, e);
             throw e;
         }
     }

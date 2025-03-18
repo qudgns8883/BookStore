@@ -39,7 +39,7 @@ public class NotificationService {
             notifications.add(notification);
         }
 
-        notificationRepository.saveAll(notifications); // 배치 저장
+        notificationRepository.saveAll(notifications);
     }
 
     @Transactional

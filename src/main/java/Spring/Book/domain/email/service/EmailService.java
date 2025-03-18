@@ -46,7 +46,6 @@ public class EmailService {
         ValueOperations<String, String> valueOps = redisTemplate.opsForValue();
         valueOps.set(username, verificationCode, 3, TimeUnit.MINUTES);
 
-
         mailSender.send(mimeMessage);
     }
 

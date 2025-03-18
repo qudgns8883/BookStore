@@ -5,7 +5,9 @@ import Spring.Book.domain.notification.service.NotificationService;
 import Spring.Book.domain.notification.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @RequiredArgsConstructor
@@ -14,6 +16,7 @@ public class UserRegistrationEventListener {
     private final NotificationService notificationService;
     private final SseService sseService;
 
+    @Async
     @EventListener
     public void handleUserRegisteredEvent(UserRegisteredEvent event) {
         notificationService.RegistrationEvent(event.getUserId(), event.getRegisteredMessage());

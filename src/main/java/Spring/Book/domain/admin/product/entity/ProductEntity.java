@@ -63,7 +63,6 @@ public class ProductEntity extends BaseTimeEntity {
         this.reviews = reviews;
     }
 
-
     public void decreaseStock(int quantity) {
         if (this.stock < quantity) {
             throw new IllegalArgumentException("재고가 부족합니다.");

@@ -19,23 +19,17 @@ public class ReviewEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false, length = 500)
     private String review;
-
     @Column(nullable = false)
     private int rating;
-
     @Column(nullable = false)
     private String author;
-
     private String status;
     private String answer;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductEntity product;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name =  "user_id")
     private UserEntity user;

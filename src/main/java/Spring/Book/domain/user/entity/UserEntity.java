@@ -38,7 +38,6 @@ public class UserEntity extends BaseTimeEntity {
     private Integer mileage;
     @Enumerated(EnumType.STRING)
     private Role role;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 

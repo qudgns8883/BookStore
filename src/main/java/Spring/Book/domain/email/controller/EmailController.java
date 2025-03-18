@@ -18,7 +18,6 @@ public class EmailController {
 
     private final EmailService emailService;
 
-
     @PostMapping("/email/sendVerificationCode")
     public ResponseEntity<String> sendVerificationCode(@RequestParam String username) {
         try {

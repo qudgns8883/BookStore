@@ -13,6 +13,7 @@ import org.apache.catalina.User;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "notification")
 public class notificationEntity extends BaseTimeEntity {
 
     @Id

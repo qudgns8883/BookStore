@@ -18,6 +18,8 @@ import Spring.Book.domain.user.service.UserService;
 import Spring.global.aspect.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import Spring.Book.domain.cart.dto.CartDto;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,17 +42,17 @@ public class PaymentService {
 
     @Loggable("ORDER_PAYMENT")
     @Transactional
-    public String saveOrder(PaymentRequest paymentRequest) {
-        UserEntity user = userService.getCurrentUser();
-        validateUserMileage(user, paymentRequest.getMileageUsed());
+    public void saveOrder(PaymentRequest paymentRequest) {
 
-        PaymentEntity payment = createPayment(paymentRequest, user);
+            UserEntity user = userService.getCurrentUser();
+            validateUserMileage(user, paymentRequest.getMileageUsed());
 
-        processOrderAndStock(paymentRequest, user, payment);
+            PaymentEntity payment = createPayment(paymentRequest, user);
 
-        updateUserMileage(user, paymentRequest.getMileageUsed(), paymentRequest.getEarnedMileage());
+            processOrderAndStock(paymentRequest, user, payment);
 
-        return "결제 정보가 저장되었습니다.";
+            updateUserMileage(user, paymentRequest.getMileageUsed(), paymentRequest.getEarnedMileage());
+
     }
 
     private void validateUserMileage(UserEntity user, int mileageUsed) {
@@ -76,12 +78,17 @@ public class PaymentService {
         return payment;
     }
 
+    @Retryable(
+            value = { org.springframework.dao.CannotAcquireLockException.class },
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 100)
+    )
     private void processOrderAndStock(PaymentRequest paymentRequest, UserEntity user, PaymentEntity payment) {
         List<String> productSummaries = new ArrayList<>();
         int totalQuantity = 0;
 
         for (CartDto item : paymentRequest.getCartDto()) {
-            ProductEntity product = productRepository.findById(item.getProduct().getId())
+            ProductEntity product = productRepository.findByIdWithLock(item.getProduct().getId())
                     .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
             if (product.getStock() < item.getQuantity()) {

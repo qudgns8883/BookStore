@@ -8,16 +8,17 @@ import Spring.Book.domain.user.entity.Status;
 import Spring.Book.domain.user.entity.UserEntity;
 import Spring.Book.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
 
 @Service
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
@@ -76,7 +77,7 @@ public class UserService {
     public UserEntity getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return userRepository.findByNickname(username)
+        return userRepository.findByNicknameWithLock(username)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
     }
 

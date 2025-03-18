@@ -26,7 +26,6 @@ public class SseService {
             removeEmitter(userId);
         });
 
-        // 클라이언트가 연결되었음을 알리는 더미 데이터 전송
         try {
             emitter.send(SseEmitter.event().name("connect").data("연결 성공"));
         } catch (IOException e) {
@@ -42,8 +41,6 @@ public class SseService {
         for (Map.Entry<Long, SseEmitter> entry : emitters.entrySet()) {
             Long userId = entry.getKey();
             SseEmitter emitter = entry.getValue();
-
-            System.out.println("📤 SSE 메시지 전송 중... 대상 userId: " + userId);
 
             try {
                 emitter.send(SseEmitter.event().name("notification").data(message));
