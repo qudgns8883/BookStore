@@ -114,7 +114,7 @@ public class ReviewService {
                 .author(review.getAuthor())
                 .status(review.getStatus())
                 .answer(review.getAnswer())
-                .createDate(review.getCreateDateAsString())
+                .createDate(review.getCreateDate())
                 .build();
     }
 }

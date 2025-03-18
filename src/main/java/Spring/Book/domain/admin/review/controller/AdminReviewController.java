@@ -34,6 +34,7 @@ public class AdminReviewController {
         model.addAttribute("totalReview", reviewList.size());
         model.addAttribute("reviewList", reviewList);
     return "/admin/review";
+
     }
 
     @GetMapping("/review/BtnStatus")

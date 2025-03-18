@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,7 +32,8 @@ public class ReviewDto {
     private String createDate;
 
     @Builder
-    public ReviewDto(Long id, Long productId, String review, int rating, String status,String author, String productName, String answer ,String createDate){
+    public ReviewDto(Long id, Long productId, String productName, String review, int rating,
+                     String author, String status, String answer, LocalDateTime createDate){
         this.id = id;
         this.productId = productId;
         this.review = review;
@@ -38,6 +42,6 @@ public class ReviewDto {
         this.productName = productName;
         this.status = status;
         this.answer = answer;
-        this.createDate = createDate;
+        this.createDate = createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }

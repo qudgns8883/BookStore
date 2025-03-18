@@ -1,20 +1,27 @@
 package Spring.Book.domain.admin.product.service;
 
 import Spring.Book.domain.admin.product.dto.ProductDto;
+import Spring.Book.domain.admin.product.dto.ProductResponseDto;
 import Spring.Book.domain.admin.product.dto.ProductStatusCount;
 import Spring.Book.domain.admin.product.entity.ProductEntity;
 import Spring.Book.domain.admin.product.entity.ProductStatus;
+import Spring.Book.domain.admin.product.entity.QProductEntity;
 import Spring.Book.domain.admin.product.repository.AdminProductRepository;
 import Spring.Book.domain.user.dto.CustomUserDetails;
 import Spring.Book.domain.user.entity.UserEntity;
 import Spring.Book.domain.user.repository.UserRepository;
 import Spring.Book.domain.user.service.UserService;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -35,11 +42,14 @@ public class AdminProductService {
     private final Path fileLocation;
     private final AdminProductRepository productRepository;
     private final UserService userService;
+    private final JPAQueryFactory queryFactory;
+    private final QProductEntity product = QProductEntity.productEntity;
 
-    public AdminProductService(@Value("${file.upload-dir}") String uploadDir, UserService userService, AdminProductRepository productRepository) {
+    public AdminProductService(@Value("${file.upload-dir}") String uploadDir, UserService userService, AdminProductRepository productRepository, JPAQueryFactory queryFactory) {
         this.fileLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
         this.userService = userService;
         this.productRepository = productRepository;
+        this.queryFactory = queryFactory;
         try {
             Files.createDirectories(this.fileLocation);
         } catch (IOException e) {
@@ -69,42 +79,82 @@ public class AdminProductService {
 
         user.addProduct(product);
     }
+    public List<ProductResponseDto> searchProducts(String status, String category, String query) {
+        BooleanExpression predicate = Expressions.asBoolean(true).isTrue()
+                .and(eqStatus(status))
+                .and(eqCategory(category))
+                .and(containsQuery(query));
 
-    public List<ProductDto> getProductsByStatusAndCategory(String status, String category, String query) {
-        List<ProductEntity> productList = productRepository.findAll();
-
-        if (!"전체상품".equals(status)) {
-            productList = productList.stream()
-                    .filter(product -> product.getStatus().name().equals(status))
-                    .collect(Collectors.toList());
-        }
-
-        if (!"전체카테고리".equals(category)) {
-            productList = productList.stream()
-                    .filter(product -> product.getCategory().equals(category))
-                    .collect(Collectors.toList());
-        }
-
-        if (!query.isEmpty()) {
-            productList = productList.stream()
-                    .filter(product -> product.getProductName().toLowerCase().contains(query.toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-
-        return productList.stream()
-                .map(product -> ProductDto.builder()
-                        .id(product.getId())
-                        .productName(product.getProductName())
-                        .author(product.getAuthor())
-                        .description(product.getDescription())
-                        .category(product.getCategory())
-                        .price(product.getPrice())
-                        .stock(product.getStock())
-                        .productStatus(product.getStatus())
-                        .createDate(product.getCreateDateAsString())
-                        .build())
-                .collect(Collectors.toList());
+        return queryFactory
+                .select(Projections.constructor(ProductResponseDto.class,
+                        product.id,
+                        product.productName,
+                        product.category,
+                        product.price,
+                        product.stock,
+                        product.status,
+                        product.createDate
+                ))
+                .from(product)
+                .where(predicate)
+                .fetch();
     }
+
+    private BooleanExpression eqStatus(String status) {
+        return (StringUtils.hasText(status) && !"전체상품".equals(status))
+                ? product.status.eq(ProductStatus.valueOf(status))
+                : null;
+    }
+
+    private BooleanExpression eqCategory(String category) {
+        return (StringUtils.hasText(category) && !"전체카테고리".equals(category))
+                ? product.category.eq(category)
+                : null;
+    }
+
+    private BooleanExpression containsQuery(String query) {
+        return StringUtils.hasText(query)
+                ? product.productName.containsIgnoreCase(query)
+                : null;
+    }
+
+
+
+//    public List<ProductDto> getProductsByStatusAndCategory(String status, String category, String query) {
+//        List<ProductEntity> productList = productRepository.findAll();
+//
+//        if (!"전체상품".equals(status)) {
+//            productList = productList.stream()
+//                    .filter(product -> product.getStatus().name().equals(status))
+//                    .collect(Collectors.toList());
+//        }
+//
+//        if (!"전체카테고리".equals(category)) {
+//            productList = productList.stream()
+//                    .filter(product -> product.getCategory().equals(category))
+//                    .collect(Collectors.toList());
+//        }
+//
+//        if (!query.isEmpty()) {
+//            productList = productList.stream()
+//                    .filter(product -> product.getProductName().toLowerCase().contains(query.toLowerCase()))
+//                    .collect(Collectors.toList());
+//        }
+//
+//        return productList.stream()
+//                .map(product -> ProductDto.builder()
+//                        .id(product.getId())
+//                        .productName(product.getProductName())
+//                        .author(product.getAuthor())
+//                        .description(product.getDescription())
+//                        .category(product.getCategory())
+//                        .price(product.getPrice())
+//                        .stock(product.getStock())
+//                        .productStatus(product.getStatus())
+//                        .createDate(product.getCreateDate())
+//                        .build())
+//                .collect(Collectors.toList());
+//    }
 
     public List<ProductDto> getAllProducts() {
         List<ProductEntity> productEntities = productRepository.findAll();

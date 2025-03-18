@@ -1,6 +1,7 @@
 package Spring.Book.domain.admin.product.controller;
 
 import Spring.Book.domain.admin.product.dto.ProductDto;
+import Spring.Book.domain.admin.product.dto.ProductResponseDto;
 import Spring.Book.domain.admin.product.dto.ProductStatusCount;
 import Spring.Book.domain.admin.product.service.AdminProductService;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +40,11 @@ public class AdminProductController {
 
     @GetMapping("/BtnStatus")
     @ResponseBody
-    public ResponseEntity<List<ProductDto>> getProductsByStatusAndCategory(
+    public ResponseEntity<List<ProductResponseDto>> getProductsByStatusAndCategory(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String category,
             @RequestParam(required = false, defaultValue = "") String query) {
-        List<ProductDto> products = adminProductService.getProductsByStatusAndCategory(status, category, query);
+        List<ProductResponseDto> products = adminProductService.searchProducts(status, category, query);
         return ResponseEntity.ok(products);
     }
 

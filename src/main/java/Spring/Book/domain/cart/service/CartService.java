@@ -84,7 +84,7 @@ public class CartService {
                             .productImage(cart.getProduct().getProductImage())
                             .productDetails(cart.getProduct().getProductDetails())
                             .productStatus(cart.getProduct().getStatus())
-                            .createDate(cart.getProduct().getCreateDate().toString())
+                            .createDate(cart.getProduct().getCreateDate())
                             .build();
 
                     return CartDto.builder()

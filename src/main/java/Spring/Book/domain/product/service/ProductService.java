@@ -28,7 +28,7 @@ public class ProductService {
                 .productImage(product.getProductImage())
                 .productDetails(product.getProductDetails())
                 .productStatus(product.getStatus())
-                .createDate(product.getCreateDateAsString())
+                .createDate(product.getCreateDate())
                 .build();
     }
 }
