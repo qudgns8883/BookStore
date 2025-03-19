@@ -6,18 +6,22 @@ import Spring.Book.domain.notification.repository.NotificationRepository;
 import Spring.Book.domain.user.entity.UserEntity;
 import Spring.Book.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
 
+    private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
 
@@ -29,17 +33,13 @@ public class NotificationService {
             throw new IllegalArgumentException("관리자들을 찾을 수 없음");
         }
 
-        List<notificationEntity> notifications = new ArrayList<>();
-        for (UserEntity admin : admins) {
-            notificationEntity notification = notificationEntity.builder()
-                    .user(admin)
-                    .isRead(false)
-                    .message(notificationMessage)
-                    .build();
-            notifications.add(notification);
-        }
+        String sql = "INSERT INTO notification (user_id, is_read, message, create_date) VALUES (?, ?, ?, ?)";
 
-        notificationRepository.saveAll(notifications);
+        List<Object[]> batchArgs = admins.stream()
+                .map(admin -> new Object[]{admin.getId(), false, notificationMessage, LocalDateTime.now()}) // create_date 직접 넣기
+                .collect(Collectors.toList());
+
+        jdbcTemplate.batchUpdate(sql, batchArgs);
     }
 
     @Transactional
