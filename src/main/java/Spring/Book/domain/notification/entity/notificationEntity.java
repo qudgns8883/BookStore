@@ -6,12 +6,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.apache.catalina.User;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "notification")
 public class notificationEntity extends BaseTimeEntity {
@@ -33,5 +31,9 @@ public class notificationEntity extends BaseTimeEntity {
         this.message = message;
         this.isRead = isRead;
         this.user = user;
+    }
+
+    public void markAsRead() {
+        this.isRead = true;
     }
 }

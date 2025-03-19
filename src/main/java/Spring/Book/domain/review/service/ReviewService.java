@@ -66,10 +66,7 @@ public class ReviewService {
         KafkaMessageDto message = new KafkaMessageDto(notificationMessage, adminIds);
         kafkaProducer.sendNotification(message);
 
-        reviewDto.setAuthor(user.getNickname());
-        reviewDto.setProductName(product.getProductName());
-        reviewDto.setId(reviewEntity.getId());
-        reviewDto.setCreateDate(reviewEntity.getCreateDateAsString());
+        reviewDto.populateFromReview(reviewEntity, user, product);
     }
 
     public boolean hasPurchased(Long productId) {

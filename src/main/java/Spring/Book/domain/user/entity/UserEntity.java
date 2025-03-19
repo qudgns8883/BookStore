@@ -10,7 +10,6 @@ import Spring.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,13 +84,23 @@ public class UserEntity extends BaseTimeEntity {
     }
 
     public void addProduct(ProductEntity product) {
-        product.setUser(this);
+        product.setProductUser(this);
         products.add(product);
     }
 
     public void addCart(CartEntity cart){
-        cart.setUser(this);
+        cart.setCartUser(this);
         carts.add(cart);
+    }
+
+    public void addPayment(PaymentEntity payment){
+        payment.setPaymentUser(this);
+        payments.add(payment);
+    }
+
+    public void addReview(ReviewEntity review){
+        review.setReviewUser(this);
+        reviews.add(review);
     }
 
     @PrePersist
@@ -101,14 +110,11 @@ public class UserEntity extends BaseTimeEntity {
         }
     }
 
-    public void addPayment(PaymentEntity payment){
-        payment.setUser(this);
-        payments.add(payment);
-    }
-
-    public void addReview(ReviewEntity review){
-        review.setUser(this);
-        reviews.add(review);
+    public void updateMileage(int amount) {
+        if (mileage == null) {
+            mileage = 0; // 기본값 초기화
+        }
+        mileage += amount; // 마일리지 증가
     }
 
 }

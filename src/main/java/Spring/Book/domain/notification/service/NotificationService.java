@@ -47,8 +47,7 @@ public class NotificationService {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("신규화원을 찾을 수 없습니다."));
 
-        int currentMileage = (user.getMileage() != null) ? user.getMileage() : 0;
-        user.setMileage(currentMileage + 3000);
+        user.updateMileage(3000);
 
         notificationEntity notification = notificationEntity.builder()
                 .user(user)
@@ -63,9 +62,7 @@ public class NotificationService {
     @Transactional
     public void markAllAsRead(Long userId) {
         List<notificationEntity> notifications = notificationRepository.findByUserId(userId);
-        notifications.forEach(notification -> {
-            notification.setRead(true);
-        });
+        notifications.forEach(notificationEntity::markAsRead);
         notificationRepository.saveAll(notifications);
     }
 

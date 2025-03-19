@@ -9,14 +9,12 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "product")
 public class ProductEntity extends BaseTimeEntity {
@@ -68,5 +66,17 @@ public class ProductEntity extends BaseTimeEntity {
             throw new IllegalArgumentException("재고가 부족합니다.");
         }
         this.stock -= quantity;
+    }
+
+    public void setProductUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public void updateStatusBasedOnStock() {
+        if (this.stock == 0) {
+            this.status = ProductStatus.품절;
+        } else {
+            this.status = ProductStatus.판매중;
+        }
     }
 }

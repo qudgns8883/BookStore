@@ -7,11 +7,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "Review")
 public class ReviewEntity extends BaseTimeEntity {
@@ -45,5 +43,9 @@ public class ReviewEntity extends BaseTimeEntity {
         this.answer = answer;
         this.user = user;
 
+    }
+
+    public void setReviewUser(UserEntity user) {
+        this.user = user;
     }
 }

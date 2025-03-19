@@ -6,10 +6,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "payment")
@@ -38,5 +36,9 @@ public class PaymentEntity {
         this.deliveryInstructions = deliveryInstructions;
         this.user = user;
         this.mileageUsed = mileageUsed;
+    }
+
+    public void setPaymentUser(UserEntity user) {
+        this.user = user;
     }
 }

@@ -6,12 +6,10 @@ import Spring.Book.domain.payment.entity.PaymentEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import static Spring.Book.domain.admin.product.dto.ProductDto.fromProductEntity;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class OrderDto {
 

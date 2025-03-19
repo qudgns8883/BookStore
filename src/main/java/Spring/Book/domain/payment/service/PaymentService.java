@@ -106,9 +106,7 @@ public class PaymentService {
 
             product.decreaseStock(item.getQuantity());
 
-            if (product.getStock() == 0) {
-                product.setStatus(ProductStatus.품절);
-            }
+            product.updateStatusBasedOnStock();
 
             productRepository.save(product);
 

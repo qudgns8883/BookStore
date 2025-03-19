@@ -1,19 +1,20 @@
 package Spring.Book.domain.review.dto;
 
 
+import Spring.Book.domain.admin.product.entity.ProductEntity;
+import Spring.Book.domain.review.entity.ReviewEntity;
+import Spring.Book.domain.user.entity.UserEntity;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class ReviewDto {
 
@@ -43,5 +44,12 @@ public class ReviewDto {
         this.status = status;
         this.answer = answer;
         this.createDate = createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    public void populateFromReview(ReviewEntity review, UserEntity user, ProductEntity product) {
+        this.author = user.getNickname();
+        this.productName = product.getProductName();
+        this.id = review.getId();
+        this.createDate = review.getCreateDateAsString();
     }
 }

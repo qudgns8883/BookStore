@@ -7,11 +7,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "cart")
 public class CartEntity {
@@ -39,5 +37,9 @@ public class CartEntity {
 
     public void updateQuantity(int newQuantity) {
         this.quantity = newQuantity;
+    }
+
+    public void setCartUser(UserEntity user) {
+        this.user = user;
     }
 }
