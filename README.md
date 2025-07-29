@@ -43,7 +43,7 @@
 <table>
   <tr>
     <td width="50%">
-      <img src="https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589" width="50%">  
+      <img src="https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589" width="70%">  
     </td>
     <td width="50%">
       <p><b>사용자는 이메일, 닉네임, 비밀번호, 생년월일, 주소 등을 입력하여  회원가입</b></p>
@@ -63,7 +63,7 @@
 <table>
   <tr>
     <td width="50%">
-      <img src="https://github.com/user-attachments/assets/aa6e99a5-03c0-4c64-81ff-e64b4a489eaf" width="50%">  
+      <img src="https://github.com/user-attachments/assets/aa6e99a5-03c0-4c64-81ff-e64b4a489eaf" width="70%">  
     </td>
     <td width="50%">
       <p><b>인증 시스템</b></p>
