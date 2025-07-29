@@ -91,7 +91,36 @@
   </tr>
 </table>
 ---
+### **메인화면**  
+<table>
+  <tr>
+    <td width="50%">
+      <img width="1043" height="539" alt="image" src="https://github.com/user-attachments/assets/7ce25651-ccdb-4844-9599-52dffe7ddc7c" />
+    </td>
+    <td width="50%">
+      <p><b>동적 UI</b></p>
+      <ul>
+        <li>로그인 여부와 사용자 권한(관리자/일반 사용자)에 따라 내비게이션 바의 메뉴(예: 로그인/로그아웃 버튼, 관리자 페이지 링크)가 유동적으로 변경</li>
+      </ul>
+       <p><b> 장바구니</b></p>
+      <ul>
+        <li>로그인 시, 헤더의 장바구니 아이콘에 현재 담긴 상품 개수가 실시간으로 업데이트</li>
+      </ul>
+       <p><b>실시간 알림 (SSE)</b></p>
+      <ul>
+        <li>이벤트를 활용하여 새로운 알림이 도착하면 종 모양 아이콘 색상이 변하고, 알림 확인 시 목록을 불러오는 등 사용자에게 실시간으로 중요한 정보를 전달</li>
+      </ul>
+       <p><b>상품 목록 표시</b></p>
+      <ul>
+        <li>판매 중지 상품을 제외하고, 품절 상품은 별도 표시하여 사용자에게 직관적인 상품 정보를 제공</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
+
+
+---
 ### **상품 조회**  
 <img src="https://github.com/user-attachments/assets/389216e2-062b-4bab-8dc6-e7f46083804e" width="70%">  
 
