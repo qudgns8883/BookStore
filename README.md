@@ -151,12 +151,12 @@
     <td>
      <img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76">  
     </td>
-    <td width="50%">
+    <td width="30%">
       <br>
        <br>
       <p><b>상품 관리</b></p>
       <ul>
-        <li>장바구니 내 상품의 수량을 자유롭게 조절하고 개별 삭제가 가능합니다. 이미 담긴 상품을 추가하면 수량이 합산</li>
+        <li>장바구니 내 상품의 수량을 조절하고 개별 삭제가 가능. 이미 담긴 상품을 추가하면 수량이 합산</li>
       </ul>
        <p><b실시간 금액 계산</b></p>
       <ul>
