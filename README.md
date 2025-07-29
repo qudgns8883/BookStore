@@ -174,7 +174,7 @@
 <table>
   <tr>
     <td>
-     <img src="https://github.com/user-attachments/assets/f40590b8-31fa-4949-ac30-10222dad0d22" width="70%"> 
+     <img src="https://github.com/user-attachments/assets/f40590b8-31fa-4949-ac30-10222dad0d22" width="90%"> 
     </td>
     <td width="30%">
       <br>
