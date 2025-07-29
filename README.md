@@ -174,14 +174,14 @@
 <table>
   <tr>
     <td>
-     <img src="https://github.com/user-attachments/assets/f40590b8-31fa-4949-ac30-10222dad0d22"> 
+     <img src="https://github.com/user-attachments/assets/f40590b8-31fa-4949-ac30-10222dad0d22" width="90%"> 
     </td>
     <td width="30%">
       <br>
        <br>
       <p><b>외부 결제 연동</b></p>
       <ul>
-        <li> 아임포트(Iamport) API를 활용하여 카카오페이 외부 결제 수단을 지</li>
+        <li> 아임포트(Iamport) API를 활용하여 카카오페이 외부 결제 수단</li>
       </ul>
        <p><b동시성 재고 관리</b></p>
       <ul>
@@ -199,22 +199,53 @@
 ---
 
 ### **결제내역**  
-<img src="https://github.com/user-attachments/assets/94f62c38-0ee9-4e10-971f-019b697287f6" width="70%">  
+
+<table>
+  <tr>
+    <td>
+     <img src="https://github.com/user-attachments/assets/94f62c38-0ee9-4e10-971f-019b697287f6" width="70%">  
+    </td>
+    <td width="30%">
+      <br>
+       <br>
+      <p><b>결제 완료 후 즉시 확인</b></p>
+      <ul>
+        <li> 결제가 성공적으로 완료되면, 해당 주문의 상세 내역 페이지로 이동</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
 
 ---
 
 ### **알림 시스템**  
 
-<img src="https://github.com/user-attachments/assets/2756c754-199a-4cd0-94f3-d13181923838" width="45%">  
+<table>
+  <tr>
+    <td>
+     <img src="https://github.com/user-attachments/assets/2756c754-199a-4cd0-94f3-d13181923838" width="45%">  
 <img src="https://github.com/user-attachments/assets/a24d5732-cdcc-4b25-8e91-d38728ec2832" width="45%">  
-<p><b> 장바구니</b></p>
-      <ul>
+    </td>
+    <td width="30%">
+      <br>
+       <br>
+      <p><b>장바구니</b></p>
+       <ul>
         <li>로그인 시, 헤더의 장바구니 아이콘에 현재 담긴 상품 개수가 실시간으로 업데이트</li>
       </ul>
        <p><b>실시간 알림 (SSE)</b></p>
       <ul>
         <li>이벤트를 활용하여 새로운 알림이 도착하면 종 모양 아이콘 색상이 변하고, 알림 확인 시 목록을 불러오는 등 사용자에게 실시간으로 중요한 정보를 전달</li>
       </ul>
+    </td>
+  </tr>
+</table>
+
+
+
+<p><b> 장바구니</b></p>
+    
 ---
 
 ### **마이페이지**  
