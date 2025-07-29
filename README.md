@@ -96,7 +96,7 @@
 <table>
   <tr>
     <td width="50%">
-      <img width="1043" height="539" alt="image" src="https://github.com/user-attachments/assets/7ce25651-ccdb-4844-9599-52dffe7ddc7c" width="50%"/>
+      <img width="1043" height="539" alt="image" src="https://github.com/user-attachments/assets/7ce25651-ccdb-4844-9599-52dffe7ddc7c" width="70%"/>
     </td>
     <td width="50%">
       <p><b>동적 UI</b></p>
