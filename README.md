@@ -115,7 +115,30 @@
 
 ---
 ### **상품 조회**  
-<img src="https://github.com/user-attachments/assets/389216e2-062b-4bab-8dc6-e7f46083804e" width="70%">  
+
+<table>
+  <tr>
+    <td width="50%">
+     <img src="https://github.com/user-attachments/assets/389216e2-062b-4bab-8dc6-e7f46083804e" width="70%">  
+    </td>
+    <td width="50%">
+      <p><b>상품 상세 정보</b></p>
+      <ul>
+        <li>상품명, 이미지, 가격, 재고, 상세 설명 등을 제공하며, 품절 여부를 직관적으로 표시</li>
+      </ul>
+       <p><b>리뷰 시스템</b></p>
+      <ul>
+        <li>상품의 평균 별점 및 총 리뷰 수</li>
+        <li>리뷰 작성은 구매 이력이 있는 사용자에게 상품당 1회로 제한</li>
+      </ul>
+       <p><b>알림</b></p>
+      <ul>
+        <li>리뷰 작성 시 카프카(Kafka)를 활용하여 관리자에게 '새로운 리뷰 등록' 알림을 비동기적으로 전송</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
 
 ---
 
