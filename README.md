@@ -143,7 +143,25 @@
 ---
 
 ### **장바구니**  
-<img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76" width="70%">  
+
+<table>
+  <tr>
+    <td width="50%">
+     <img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76" width="70%">  
+    </td>
+    <td width="50%">
+      <p><b>상품 관리</b></p>
+      <ul>
+        <li>장바구니 내 상품의 수량을 자유롭게 조절하고 개별 삭제가 가능합니다. 이미 담긴 상품을 추가하면 수량이 합산</li>
+      </ul>
+       <p><b실시간 금액 계산</b></p>
+      <ul>
+        <li>수량 변경 및 마일리지 사용에 따라 상품별 가격, 적립 포인트, 마일리지 활용 그리고 총 결제 금액이 실시간으로 업데이트</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
 
 ---
 
