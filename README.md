@@ -151,7 +151,7 @@
     <td>
      <img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76">  
     </td>
-    <td width="50%">
+    <td width="30%">
       <br>
        <br>
       <p><b>상품 관리</b></p>
