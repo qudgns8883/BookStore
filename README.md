@@ -96,7 +96,7 @@
 ### **회원 관리**  
 ![Image](https://github.com/user-attachments/assets/098122fc-a1ec-44b8-bbd6-86c0809d09b1)
 ---
-
+.
 ### **이벤트로그**  
 ![Image](https://github.com/user-attachments/assets/23f60174-c217-48cf-98dd-1dd5d84f6d3b)
 
