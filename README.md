@@ -139,10 +139,7 @@
   </tr>
 </table>
 
-
 ---
-
- <img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76">
 
 ### **장바구니**  
 
@@ -249,9 +246,14 @@
 ---
 
 ### **마이페이지**  
-<img src="https://github.com/user-attachments/assets/0d8274e2-3ecf-42a7-bd99-0f267c6f08ff" width="25%">  
-<img src="https://github.com/user-attachments/assets/e6696ed3-70a3-4fc7-9d0c-96bf9035b9d5" width="45%">
-<img src="https://github.com/user-attachments/assets/7a1572b6-91d3-4cdd-8692-ae0719ac2eac" width="45%">
+<img src="https://github.com/user-attachments/assets/0d8274e2-3ecf-42a7-bd99-0f267c6f08ff" width="30%">  
+<img src="https://github.com/user-attachments/assets/e6696ed3-70a3-4fc7-9d0c-96bf9035b9d5" width="40%">
+<img src="https://github.com/user-attachments/assets/7a1572b6-91d3-4cdd-8692-ae0719ac2eac" width="40%">
+
+- 구매 내역: 사용자 모든 주문 내역을 조회하며, 모달 팝업으로 상세 주문 정보를 확인
+- 정보 수정: 닉네임, 주소 등 개인 정보를 수정
+- 리뷰 내역: 사용자가 작성한 리뷰를 한눈에 확인하고 직접 삭제
+- 
 ---
 
 ### **판매 대시보드**  
