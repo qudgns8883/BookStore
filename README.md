@@ -96,7 +96,7 @@
 <table>
   <tr>
     <td width="50%">
-      <img width="1043" height="539" alt="image" src="https://github.com/user-attachments/assets/7ce25651-ccdb-4844-9599-52dffe7ddc7c" width="70%"/>
+      <img width="1043" height="539" alt="image" src="https://github.com/user-attachments/assets/7ce25651-ccdb-4844-9599-52dffe7ddc7c" width="80%"/>
     </td>
     <td width="50%">
       <p><b>동적 UI</b></p>
@@ -119,7 +119,7 @@
 <table>
   <tr>
     <td width="50%">
-     <img src="https://github.com/user-attachments/assets/389216e2-062b-4bab-8dc6-e7f46083804e" width="70%">  
+     <img src="https://github.com/user-attachments/assets/389216e2-062b-4bab-8dc6-e7f46083804e" width="90%">  
     </td>
     <td width="50%">
       <p><b>상품 상세 정보</b></p>
@@ -147,7 +147,7 @@
 <table>
   <tr>
     <td width="50%">
-     <img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76" width="70%">  
+     <img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76" width="90%">  
     </td>
     <td width="50%">
       <p><b>상품 관리</b></p>
