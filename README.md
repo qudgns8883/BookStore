@@ -43,9 +43,9 @@
 <table>
   <tr>
     <td width="50%">
-      <img src="https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589" width="50%">  
+      <img src="https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589" width="40%">  
     </td>
-    <td width="50%">
+    <td width="60%">
       <p><b>사용자는 이메일, 닉네임, 비밀번호, 생년월일, 주소 등을 입력하여  회원가입</b></p>
       <ul>
         <li>사용자의 비밀번호는 안전하게 암호화되어 저장</li>
@@ -63,9 +63,9 @@
 <table>
   <tr>
     <td width="50%">
-      <img src="https://github.com/user-attachments/assets/aa6e99a5-03c0-4c64-81ff-e64b4a489eaf" width="50%">  
+      <img src="https://github.com/user-attachments/assets/aa6e99a5-03c0-4c64-81ff-e64b4a489eaf" width="40%">  
     </td>
-    <td width="50%">
+    <td width="60%">
       <p><b>인증 시스템</b></p>
       <ul>
         <li>스프링 프레임워크의 인증 기술을 활용한 폼 로그인 방식으로 사용자를 인증</li>
@@ -170,7 +170,31 @@
 ---
 
 ### **주문**  
-<img src="https://github.com/user-attachments/assets/f40590b8-31fa-4949-ac30-10222dad0d22" width="70%"> 
+
+<table>
+  <tr>
+    <td>
+     <img src="https://github.com/user-attachments/assets/f40590b8-31fa-4949-ac30-10222dad0d22" width="70%"> 
+    </td>
+    <td width="30%">
+      <br>
+       <br>
+      <p><b>외부 결제 연동</b></p>
+      <ul>
+        <li> 아임포트(Iamport) API를 활용하여 카카오페이 외부 결제 수단을 지</li>
+      </ul>
+       <p><b동시성 재고 관리</b></p>
+      <ul>
+        <li>비관적 락을 활용하여 동시 주문 시 발생할 수 있는 재고 문제를 방지, @Retryable 어노테이션으로 락 경합 시 자동으로 재시도</li>
+      </ul>
+         <p><b알림</b></p>
+      <ul>
+        <li>주문 완료 시 카프카(Kafka)를 활용하여 관리자에게 새로운 주문 알림을 비동기적으로 전송</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
 
 ---
 
