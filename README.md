@@ -144,6 +144,7 @@
 
 ### **장바구니**  
 
+     <img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76">  
 <table>
   <tr>
     <td>
