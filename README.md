@@ -146,7 +146,7 @@
 
 <table>
   <tr>
-    <td width="50%">
+    <td>
      <img src="https://github.com/user-attachments/assets/1fdb23c8-87e0-4471-9bce-21247e2b7f76" width="90%">  
     </td>
     <td width="50%">
