@@ -38,10 +38,6 @@
 ---
 ## **3. 기능별 화면 및 소개**
 
-### **회원가입**  
-
-
-
 ---
 ### **메인화면**  
 <table>
@@ -193,8 +189,9 @@
 ---
 
 
-### **판매 대시보드**  
+### **판매 대시보드 & 이벤트로그**  
 ![Image](https://github.com/user-attachments/assets/d1e3d06d-5b7c-4a71-b5aa-136fac51292c)
+![Image](https://github.com/user-attachments/assets/23f60174-c217-48cf-98dd-1dd5d84f6d3b)
 * **Kafka**: 실시간 로그 데이터를 안정적이고 효율적으로 수집 및 전달하기 위한 분산 메시징 시스템으로 활용
 * **Logstash**: Kafka로부터 로그를 받아 표준화된 형태로 가공하고, Elasticsearch로의 원활한 데이터 적재 파이프라인을 구축
 * **Elasticsearch**: 방대한 로그 데이터를 빠르게 저장하고 색인하여, Kibana에서 실시간에 가까운 검색 및 복합 분석을 가능
@@ -205,9 +202,7 @@
 ### **상품 관리**  
 ![Image](https://github.com/user-attachments/assets/9ae30b3e-af40-4f6c-8d43-e957bfa64ad5)
 * **QueryDSL** : 다양한 검색 조건들을 BooleanExpression으로 유연하게 조합하여 동적인 쿼리를 생성하고 실행
----
 
-### **이벤트로그**  
-![Image](https://github.com/user-attachments/assets/23f60174-c217-48cf-98dd-1dd5d84f6d3b)
+
 
 
