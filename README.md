@@ -40,56 +40,7 @@
 
 ### **회원가입**  
 
-<table>
-  <tr>
-    <td width="50%">
-      <img src="https://github.com/user-attachments/assets/491a7c5f-542c-4d88-9f0e-6fa582114589" width="40%">  
-    </td>
-    <td width="60%">
-      <p><b>사용자는 이메일, 닉네임, 비밀번호, 생년월일, 주소 등을 입력하여  회원가입</b></p>
-      <ul>
-        <li>사용자의 비밀번호는 안전하게 암호화되어 저장</li>
-        <li>가입 시 이메일(아이디)과 닉네임의 중복 여부를 검증하여 데이터의 고유성을 보장, 사용자가 입력하는 닉네임은 실시간으로 중복 확인이 가능</li>
-        <li>회원가입이 완료되면 이벤트를 발행하여 마일리지 지급과 같은 후속 작업을 비동기적으로 처리</li>
-      </ul>
-    </td>
-  </tr>
-</table>
 
-
-
----
-### **로그인**  
-<table>
-  <tr>
-    <td width="50%">
-      <img src="https://github.com/user-attachments/assets/aa6e99a5-03c0-4c64-81ff-e64b4a489eaf" width="40%">  
-    </td>
-    <td width="60%">
-      <p><b>인증 시스템</b></p>
-      <ul>
-        <li>스프링 프레임워크의 인증 기술을 활용한 폼 로그인 방식으로 사용자를 인증</li>
-      </ul>
-      <p><b>사용자 정보 처리</b></p>
-      <ul>
-        <li>이메일을 기반으로 데이터베이스에서 정보를 조회하고, 이를 통해 로그인 처리</li>
-      </ul>
-       <p><b>로그인 결과</b></p>
-      <ul>
-        <li>성공 시: 메인 페이지로 이동</li>
-        <li>실패 시: 로그인 실패 사유에 따라 사용자에게 적절한 메시지를 제공</li>
-      </ul>
-       <p><b>인증 상태 관리</b></p>
-      <ul>
-        <li>로그인 성공 시 사용자의 인증 정보는 시스템 내부에 안전하게 저장되어, 애플리케이션 전반에서 사용자의 로그인 상태와 권한을 쉽게 확인</li>
-      </ul>
-       <p><b>전역 정보 제공</b></p>
-      <ul>
-        <li> 로그인 여부, 닉네임, 역할(관리자/일반 사용자) 등 사용자 관련 정보가 모든 화면에 자동으로 제공되어, 사용자 맞춤형 화면을 쉽게 구현</li>
-      </ul>
-    </td>
-  </tr>
-</table>
 
 ---
 ### **메인화면**  
@@ -238,44 +189,24 @@
     </td>
   </tr>
 </table>
-
-
-
-<p><b> 장바구니</b></p>
     
 ---
 
-### **마이페이지**  
-<img src="https://github.com/user-attachments/assets/0d8274e2-3ecf-42a7-bd99-0f267c6f08ff" width="30%">  
-<img src="https://github.com/user-attachments/assets/e6696ed3-70a3-4fc7-9d0c-96bf9035b9d5" width="35%">
-<img src="https://github.com/user-attachments/assets/7a1572b6-91d3-4cdd-8692-ae0719ac2eac" width="35%">
-
-- 구매 내역: 사용자 모든 주문 내역을 조회하며, 모달 팝업으로 상세 주문 정보를 확인
-- 정보 수정: 닉네임, 주소 등 개인 정보를 수정
-- 리뷰 내역: 사용자가 작성한 리뷰를 한눈에 확인하고 직접 삭제
-
----
 
 ### **판매 대시보드**  
 ![Image](https://github.com/user-attachments/assets/d1e3d06d-5b7c-4a71-b5aa-136fac51292c)
----
+* **Kafka**: 실시간 로그 데이터를 안정적이고 효율적으로 수집 및 전달하기 위한 분산 메시징 시스템으로 활용
+* **Logstash**: Kafka로부터 로그를 받아 표준화된 형태로 가공하고, Elasticsearch로의 원활한 데이터 적재 파이프라인을 구축
+* **Elasticsearch**: 방대한 로그 데이터를 빠르게 저장하고 색인하여, Kibana에서 실시간에 가까운 검색 및 복합 분석을 가능
+* **Kibana**: Elasticsearch의 데이터를 기반으로 직관적이고 동적인 판매 대시보드를 구축하여, 관리자가 데이터를 시각적으로 쉽게 이해하고 모니터링할 수 있도록 웹에 임베드
 
-### **상품 등록**  
-![Image](https://github.com/user-attachments/assets/0c1af8a3-c9cc-4242-af87-024f46a8c66f)
 ---
 
 ### **상품 관리**  
 ![Image](https://github.com/user-attachments/assets/9ae30b3e-af40-4f6c-8d43-e957bfa64ad5)
+* **QueryDSL** : 다양한 검색 조건들을 BooleanExpression으로 유연하게 조합하여 동적인 쿼리를 생성하고 실행
 ---
 
-### **리뷰 관리**  
-![Image](https://github.com/user-attachments/assets/92afc4be-b2ad-43e3-8982-c8962032fcc7)
----
-
-### **회원 관리**  
-![Image](https://github.com/user-attachments/assets/098122fc-a1ec-44b8-bbd6-86c0809d09b1)
----
-.
 ### **이벤트로그**  
 ![Image](https://github.com/user-attachments/assets/23f60174-c217-48cf-98dd-1dd5d84f6d3b)
 
