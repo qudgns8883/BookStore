@@ -204,7 +204,7 @@
 * **QueryDSL** : 다양한 검색 조건들을 BooleanExpression으로 유연하게 조합하여 동적인 쿼리를 생성하고 실행
 
 
-[![HitCount](https://hits.dwyl.com/qudgns8883/BookStore.svg?style=flat&show=unique)](http://hits.dwyl.com/qudgns8883/BookStore)
+[![HitCount](https://hits.dwyl.com/qudgns8883/BookStore.svg?style=flat-square&show=unique)](http://hits.dwyl.com/qudgns8883/BookStore)
 
 
 
